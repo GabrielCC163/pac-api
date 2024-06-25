@@ -1,0 +1,21 @@
+version: "3.8"
+
+networks:
+  app-net:
+    driver: bridge
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: workflows
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/data/postgres
+    restart: unless-stopped
+
+volumes:
+  db-data:
