@@ -11,6 +11,7 @@ import { CreateUserDto, UserResponseDto } from './dto/create-user.dto';
 import { IsPublic } from '@common/decorators/ispublic.decorator';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
@@ -34,6 +35,7 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @ApiBearerAuth()
   @Get('current-user')
   @ApiOkResponse({ type: UserResponseDto, description: 'Logged in user' })
   findCurrentUser(@CurrentUser() user: UserEntity) {
