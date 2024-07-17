@@ -17,6 +17,17 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (isPublic) {
       return true;
     }
+
+    const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    if (!roles) {
+      return true;
+    }
+    const { user } = context.switchToHttp().getRequest();
+    if (!user || !roles.includes(user.role)) {
+      return false;
+    }
+
+
     return super.canActivate(context);
   }
 }
