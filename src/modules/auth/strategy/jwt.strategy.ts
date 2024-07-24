@@ -19,9 +19,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     this.authService.verifyToken(token);
     return {
       id: payload.sub,
-      document: payload.document,
+      email: payload.email,
       name: payload.name,
-      type: payload.type,
+      role: payload.role,
     };
   }
 }

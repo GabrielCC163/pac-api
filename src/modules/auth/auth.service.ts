@@ -28,14 +28,14 @@ export class AuthService {
   }
 
   async signIn(loginAttempt: LoginUserDto): Promise<LoginResponseDto> {
-    const INCORRECT_DOCUMENT_OR_PASSWORD = 'incorrect document or password';
+    const INCORRECT_EMAIL_OR_PASSWORD = 'incorrect email or password';
 
-    const userToAttempt = await this.userService.findUserByDocument(
-      loginAttempt.document,
+    const userToAttempt = await this.userService.findUserByEmail(
+      loginAttempt.email,
     );
 
     if (!userToAttempt) {
-      throw new NotFoundException(INCORRECT_DOCUMENT_OR_PASSWORD);
+      throw new NotFoundException(INCORRECT_EMAIL_OR_PASSWORD);
     }
 
     let isMatch = false;
@@ -45,13 +45,13 @@ export class AuthService {
         userToAttempt.password,
       );
     } catch (error) {
-      throw new UnauthorizedException(INCORRECT_DOCUMENT_OR_PASSWORD);
+      throw new UnauthorizedException(INCORRECT_EMAIL_OR_PASSWORD);
     }
 
     if (isMatch) {
       return this.createJwtPayload(userToAttempt);
     } else {
-      throw new UnauthorizedException(INCORRECT_DOCUMENT_OR_PASSWORD);
+      throw new UnauthorizedException(INCORRECT_EMAIL_OR_PASSWORD);
     }
   }
 
@@ -70,9 +70,9 @@ export class AuthService {
   private async createJwtPayload(user: UserEntity) {
     const data: JwtPayload = {
       sub: user.id,
-      document: user.document,
+      email: user.email,
       name: user.name,
-      type: user.type,
+      role: user.role,
     };
 
     const jwt = this.jwtService.sign(data, {

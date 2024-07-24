@@ -9,6 +9,7 @@ import { JwtAuthGuard } from '@modules/auth/guard/jwt-auth.guard';
 import { getConfig } from '@config/app.config';
 import { UserModule } from '@modules/user/user.module';
 import { AuthModule } from '@modules/auth/auth.module';
+import { ClientModule } from './modules/client/client.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { AuthModule } from '@modules/auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    ClientModule,
   ],
   controllers: [],
   providers: [

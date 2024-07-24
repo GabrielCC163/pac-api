@@ -1,4 +1,5 @@
 import { IS_PUBLIC_KEY } from '@common/decorators/ispublic.decorator';
+import { ROLES_KEY } from '@common/decorators/roles.decorator';
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
@@ -18,7 +19,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return true;
     }
 
-    const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    const roles = this.reflector.get<string[]>(ROLES_KEY, context.getHandler());
     if (!roles) {
       return true;
     }
@@ -26,7 +27,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (!user || !roles.includes(user.role)) {
       return false;
     }
-
 
     return super.canActivate(context);
   }

@@ -1,8 +1,8 @@
-import { UserTypeEnum } from '@modules/user/entities/user.entity';
+import { UserRoleEnum } from '@modules/user/entities/user.entity';
 
 export interface JwtPayload {
   sub: string;
-  document: string;
+  email: string;
   name: string;
-  type: UserTypeEnum;
+  role: UserRoleEnum;
 }

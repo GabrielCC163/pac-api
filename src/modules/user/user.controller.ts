@@ -1,10 +1,5 @@
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserEntity } from './entities/user.entity';
 import { UserService } from './user.service';
 import { CreateUserDto, UserResponseDto } from './dto/create-user.dto';
@@ -20,9 +15,7 @@ import {
 @ApiTags('Users')
 @Controller('users')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @IsPublic()
   @ApiCreatedResponse({

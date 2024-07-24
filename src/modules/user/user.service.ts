@@ -2,7 +2,7 @@ import * as bcrypt from 'bcryptjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity, UserTypeEnum } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
@@ -13,9 +13,7 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const userExists = await this.userRepository.findOne({
-      where: { document: createUserDto.document },
-    });
+    const userExists = await this.findUserByEmail(createUserDto.email);
 
     if (userExists) {
       throw new BadRequestException('User already exists');
@@ -24,7 +22,6 @@ export class UserService {
     const password = await bcrypt.hash(createUserDto.password, 10);
     const userDto = {
       ...createUserDto,
-      type: UserTypeEnum.TECHNICIAN,
       password,
     };
 
@@ -33,10 +30,10 @@ export class UserService {
     return newUser;
   }
 
-  findUserByDocument(document: string): Promise<UserEntity> {
+  findUserByEmail(email: string): Promise<UserEntity> {
     return this.userRepository
       .createQueryBuilder('user')
-      .where('user.document = :document', { document })
+      .where('user.email = :email', { email })
       .addSelect('user.password')
       .getOne();
   }

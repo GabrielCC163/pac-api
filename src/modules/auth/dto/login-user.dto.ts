@@ -1,12 +1,12 @@
-import { UserTypeEnum } from '@modules/user/entities/user.entity';
+import { UserRoleEnum } from '@modules/user/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty } from 'class-validator';
 
 export class LoginUserDto {
-  @ApiProperty({ example: 'cpf or cnpj' })
+  @ApiProperty({ example: 'john@gmail.com' })
   @IsNotEmpty()
   @IsString()
-  readonly document: string;
+  readonly email: string;
 
   @ApiProperty({ example: '123123' })
   @IsNotEmpty()
@@ -18,14 +18,14 @@ class LoginDataResponseDto {
   @ApiProperty({ example: 'a06d1288-18be-44c1-83db-75ef1b214733' })
   sub: string;
 
-  @ApiProperty({ example: '01234567819' })
-  document: string;
+  @ApiProperty({ example: 'john@gmail.com' })
+  email: string;
 
   @ApiProperty({ example: 'Ana Silva' })
   name: string;
 
-  @ApiProperty({ example: UserTypeEnum.TECHNICIAN })
-  type: UserTypeEnum;
+  @ApiProperty({ example: UserRoleEnum.TECHNICIAN })
+  role: UserRoleEnum;
 }
 
 export class LoginResponseDto {

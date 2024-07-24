@@ -1,11 +1,12 @@
 import { BaseResponseDto } from '@common/dto/base-response.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsEmail,
   IsNotEmpty,
   IsString,
   IsStrongPassword,
 } from 'class-validator';
-import { UserTypeEnum } from '../entities/user.entity';
+import { UserRoleEnum } from '../entities/user.entity';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'John' })
@@ -13,15 +14,10 @@ export class CreateUserDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ example: '00123456789' })
+  @ApiProperty({ example: 'john@gmail.com' })
   @IsNotEmpty()
-  @IsString()
-  document: string;
-
-  // @ApiProperty({ example: 'john@gmail.com' })
-  // @IsNotEmpty()
-  // @IsEmail()
-  // email: string;
+  @IsEmail()
+  email: string;
 
   @ApiProperty({ example: 'abc123' })
   @IsNotEmpty()
@@ -39,12 +35,9 @@ export class UserResponseDto extends BaseResponseDto {
   @ApiProperty({ example: 'John' })
   name: string;
 
-  @ApiProperty({ example: '00123456789' })
-  document: string;
+  @ApiProperty({ example: 'john@gmail.com' })
+  email: string;
 
-  // @ApiProperty({ example: 'john@gmail.com' })
-  // email: string;
-
-  @ApiProperty({ example: UserTypeEnum.TECHNICIAN })
-  type: UserTypeEnum;
+  @ApiProperty({ example: UserRoleEnum.TECHNICIAN })
+  role: UserRoleEnum;
 }

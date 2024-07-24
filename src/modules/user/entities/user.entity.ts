@@ -1,10 +1,12 @@
 import { BaseEntity } from '@database/base.entity';
 import { Column, Entity, Index } from 'typeorm';
 
-export enum UserTypeEnum {
-  TECHNICAL_MANAGER = 'TECHNICAL_MANAGER',
+export enum UserRoleEnum {
+  ADMIN = 'ADMIN',
+  CLIENT = 'CLIENT',
+  COST_CENTER = 'COST_CENTER',
   TECHNICIAN = 'TECHNICIAN',
-  COMPANY = 'COMPANY',
+  TECHNICAL_MANAGER = 'TECHNICAL_MANAGER',
 }
 
 @Entity('users')
@@ -14,11 +16,11 @@ export class UserEntity extends BaseEntity {
 
   @Column()
   @Index({ unique: true })
-  document: string;
+  email: string;
 
   @Column({ type: 'text', select: false })
   password: string;
 
-  @Column({ type: 'enum', enum: UserTypeEnum })
-  type: UserTypeEnum;
+  @Column({ type: 'enum', enum: UserRoleEnum })
+  role: UserRoleEnum;
 }
