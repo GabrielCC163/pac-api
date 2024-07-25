@@ -17,16 +17,16 @@ import {
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @IsPublic()
-  @ApiCreatedResponse({
-    type: UserResponseDto,
-    description: 'User created',
-  })
-  @ApiBadRequestResponse({ description: 'User already exists' })
-  @Post()
-  async createUser(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
+  // @IsPublic()
+  // @ApiCreatedResponse({
+  //   type: UserResponseDto,
+  //   description: 'User created',
+  // })
+  // @ApiBadRequestResponse({ description: 'User already exists' })
+  // @Post()
+  // async createUser(@Body() createUserDto: CreateUserDto) {
+  //   return this.userService.create(createUserDto);
+  // }
 
   @ApiBearerAuth()
   @Get('current-user')

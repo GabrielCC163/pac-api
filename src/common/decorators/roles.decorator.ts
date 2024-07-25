@@ -12,4 +12,4 @@ export const Roles = (roles: UserRoleEnum[]) => {
     ApiBearerAuth(),
     ApiUnauthorizedResponse({ description: 'Unauthorized' }),
   );
-}
+};

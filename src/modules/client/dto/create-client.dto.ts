@@ -3,13 +3,13 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateClientDto extends CreateUserDto {
-  @ApiProperty({ example: 'FORD MOTORS LTDA'})
+  @ApiProperty({ example: 'FORD MOTORS LTDA' })
   companyName: string;
 
   @ApiPropertyOptional({ example: 'FORD' })
   businessName: string;
 
-  @ApiProperty({ example: '10517946000183'})
+  @ApiProperty({ example: '10517946000183' })
   cnpj: string;
 
   @ApiPropertyOptional({ example: '88025-000' })
@@ -17,7 +17,7 @@ export class CreateClientDto extends CreateUserDto {
   @IsString()
   addressZipCode: string;
 
-  @ApiPropertyOptional({ example: 'Tech Avenue'})
+  @ApiPropertyOptional({ example: 'Tech Avenue' })
   @IsOptional()
   @IsString()
   addressStreet: string;
@@ -27,22 +27,22 @@ export class CreateClientDto extends CreateUserDto {
   @IsNumber()
   addressNumber: number;
 
-  @ApiPropertyOptional({ example: 'Bl 6'})
+  @ApiPropertyOptional({ example: 'Bl 6' })
   @IsOptional()
   @IsString()
   addressComplement: string;
 
-  @ApiPropertyOptional({ example: 'Euro Garden'})
+  @ApiPropertyOptional({ example: 'Euro Garden' })
   @IsOptional()
   @IsString()
   addressDistrict: string;
 
-  @ApiPropertyOptional({ example: 'Miami'})
+  @ApiPropertyOptional({ example: 'Miami' })
   @IsOptional()
   @IsString()
   addressCity: string;
 
-  @ApiPropertyOptional({ example: 'Florida'})
+  @ApiPropertyOptional({ example: 'Florida' })
   @IsOptional()
   @IsString()
   addressState: string;

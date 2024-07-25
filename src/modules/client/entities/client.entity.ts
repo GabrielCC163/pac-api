@@ -4,7 +4,7 @@ import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity('clients')
 export class ClientEntity extends BaseEntity {
-  @Column({ name: 'company_name'})
+  @Column({ name: 'company_name' })
   companyName: string;
 
   @Column({ name: 'business_name', nullable: true })
@@ -13,13 +13,13 @@ export class ClientEntity extends BaseEntity {
   @Column()
   cnpj: string;
 
-  @Column({ name: 'address_zip_code', nullable: true})
+  @Column({ name: 'address_zip_code', nullable: true })
   addressZipCode?: string;
 
-  @Column({ name: 'address_street', nullable: true})
+  @Column({ name: 'address_street', nullable: true })
   addressStreet?: string;
 
-  @Column({ name: 'address_number', nullable: true})
+  @Column({ name: 'address_number', nullable: true })
   addressNumber?: number;
 
   @Column({ name: 'address_complement', nullable: true })
@@ -41,6 +41,6 @@ export class ClientEntity extends BaseEntity {
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
-  @Column({ name: 'user_id'})
+  @Column({ name: 'user_id' })
   userId: string;
 }
