@@ -1,5 +1,5 @@
 import { BaseResponseDto } from '@common/dto/base-response.dto';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsEnum,
@@ -31,9 +31,7 @@ export class CreateUserDto {
   })
   password: string;
 
-  @ApiProperty({ enum: UserRoleEnum, example: UserRoleEnum.CLIENT })
-  @IsNotEmpty()
-  @IsEnum(UserRoleEnum)
+  @ApiHideProperty()
   role: UserRoleEnum;
 }
 

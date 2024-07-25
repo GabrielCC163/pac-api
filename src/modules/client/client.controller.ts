@@ -8,16 +8,16 @@ import {
   Patch,
   Param,
   Delete,
-  HttpStatus,
   HttpCode,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiTags } from '@nestjs/swagger';
 import { ClientService } from './client.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 
-@ApiTags('Client')
-@Controller('client')
+@ApiTags('Clients')
+@Controller('clients')
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
@@ -36,14 +36,17 @@ export class ClientController {
 
   @Roles([UserRoleEnum.ADMIN])
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
+  update(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() updateClientDto: UpdateClientDto,
+  ) {
     return this.clientService.update(id, updateClientDto);
   }
 
   @Roles([UserRoleEnum.ADMIN])
   @Delete(':id')
   @HttpCode(204)
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', new ParseUUIDPipe()) id: string) {
     await this.clientService.remove(id);
   }
 }
