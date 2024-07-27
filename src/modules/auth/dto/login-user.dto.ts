@@ -21,9 +21,6 @@ class LoginDataResponseDto {
   @ApiProperty({ example: 'john@gmail.com' })
   email: string;
 
-  @ApiProperty({ example: 'Ana Silva' })
-  name: string;
-
   @ApiProperty({ example: UserRoleEnum.TECHNICIAN })
   role: UserRoleEnum;
 }

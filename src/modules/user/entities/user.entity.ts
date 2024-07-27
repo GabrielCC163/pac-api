@@ -12,9 +12,6 @@ export enum UserRoleEnum {
 @Entity('users')
 export class UserEntity extends BaseEntity {
   @Column()
-  name: string;
-
-  @Column()
   @Index({ unique: true })
   email: string;
 

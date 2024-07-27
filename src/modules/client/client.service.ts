@@ -26,12 +26,10 @@ export class ClientService {
 
     const user = await this.userService.create({
       email: createClientDto.email,
-      name: createClientDto.name,
       password: createClientDto.password,
       role: UserRoleEnum.CLIENT,
     });
 
-    delete createClientDto.name;
     delete createClientDto.email;
     delete createClientDto.password;
 

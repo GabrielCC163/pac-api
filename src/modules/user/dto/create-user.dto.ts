@@ -10,11 +10,6 @@ import {
 import { UserRoleEnum } from '../entities/user.entity';
 
 export class CreateUserDto {
-  @ApiProperty({ example: 'John' })
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
   @ApiProperty({ example: 'john@gmail.com' })
   @IsNotEmpty()
   @IsEmail()
@@ -36,9 +31,6 @@ export class CreateUserDto {
 }
 
 export class UserResponseDto extends BaseResponseDto {
-  @ApiProperty({ example: 'John' })
-  name: string;
-
   @ApiProperty({ example: 'john@gmail.com' })
   email: string;
 

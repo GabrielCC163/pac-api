@@ -26,12 +26,10 @@ export class CostCenterService {
 
     const user = await this.userService.create({
       email: createCostCenterDto.email,
-      name: createCostCenterDto.name,
       password: createCostCenterDto.password,
       role: UserRoleEnum.COST_CENTER,
     });
 
-    delete createCostCenterDto.name;
     delete createCostCenterDto.email;
     delete createCostCenterDto.password;
 
