@@ -12,6 +12,7 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { ClientModule } from './modules/client/client.module';
 import { CostCenterModule } from './modules/cost-center/cost-center.module';
 import { TechnicianModule } from './modules/technician/technician.module';
+import { TechnicalManagerModule } from './modules/technical-manager/technical-manager.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { TechnicianModule } from './modules/technician/technician.module';
     ClientModule,
     CostCenterModule,
     TechnicianModule,
+    TechnicalManagerModule,
   ],
   controllers: [],
   providers: [

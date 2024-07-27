@@ -17,7 +17,7 @@ export class TechnicianService {
 
   async create(createTechnicianDto: CreateTechnicianDto) {
     const technicianExists = await this.technicianRepository.findOneBy({
-      document: createTechnicianDto.document
+      document: createTechnicianDto.document,
     });
 
     if (technicianExists) {
@@ -27,7 +27,7 @@ export class TechnicianService {
     const user = await this.userService.create({
       email: createTechnicianDto.email,
       password: createTechnicianDto.password,
-      role: UserRoleEnum.TECHNICIAN
+      role: UserRoleEnum.TECHNICIAN,
     });
 
     delete createTechnicianDto.email;
@@ -36,13 +36,13 @@ export class TechnicianService {
     return await this.technicianRepository.save({
       ...createTechnicianDto,
       userId: user.id,
-    })
+    });
   }
 
   findAll() {
     return this.technicianRepository.find({
-      order: { createdAt: 'DESC'}
-    })
+      order: { createdAt: 'DESC' },
+    });
   }
 
   findOne(id: string): Promise<TechnicianEntity> {
