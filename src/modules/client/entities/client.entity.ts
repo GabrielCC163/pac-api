@@ -1,6 +1,6 @@
 import { BaseEntity } from '@database/base.entity';
 import { UserEntity } from '@modules/user/entities/user.entity';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity('clients')
 export class ClientEntity extends BaseEntity {
@@ -11,6 +11,7 @@ export class ClientEntity extends BaseEntity {
   businessName?: string;
 
   @Column()
+  @Index({ unique: true })
   cnpj: string;
 
   @Column({ name: 'address_zip_code', nullable: true })

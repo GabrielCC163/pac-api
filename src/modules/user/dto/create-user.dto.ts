@@ -1,12 +1,6 @@
 import { BaseResponseDto } from '@common/dto/base-response.dto';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
-import {
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsString,
-  IsStrongPassword,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsStrongPassword } from 'class-validator';
 import { UserRoleEnum } from '../entities/user.entity';
 
 export class CreateUserDto {

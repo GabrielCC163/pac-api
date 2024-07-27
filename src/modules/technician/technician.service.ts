@@ -1,26 +1,59 @@
-import { Injectable } from '@nestjs/common';
+import { UserRoleEnum } from '@modules/user/entities/user.entity';
+import { UserService } from '@modules/user/user.service';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateTechnicianDto } from './dto/create-technician.dto';
 import { UpdateTechnicianDto } from './dto/update-technician.dto';
+import { TechnicianEntity } from './entities/technician.entity';
 
 @Injectable()
 export class TechnicianService {
-  create(createTechnicianDto: CreateTechnicianDto) {
-    return 'This action adds a new technician';
+  constructor(
+    private userService: UserService,
+    @InjectRepository(TechnicianEntity)
+    private technicianRepository: Repository<TechnicianEntity>,
+  ) {}
+
+  async create(createTechnicianDto: CreateTechnicianDto) {
+    const technicianExists = await this.technicianRepository.findOneBy({
+      document: createTechnicianDto.document
+    });
+
+    if (technicianExists) {
+      throw new BadRequestException('Technician already exists');
+    }
+
+    const user = await this.userService.create({
+      email: createTechnicianDto.email,
+      password: createTechnicianDto.password,
+      role: UserRoleEnum.TECHNICIAN
+    });
+
+    delete createTechnicianDto.email;
+    delete createTechnicianDto.password;
+
+    return await this.technicianRepository.save({
+      ...createTechnicianDto,
+      userId: user.id,
+    })
   }
 
   findAll() {
-    return `This action returns all technician`;
+    return this.technicianRepository.find({
+      order: { createdAt: 'DESC'}
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} technician`;
+  findOne(id: string): Promise<TechnicianEntity> {
+    return this.technicianRepository.findOneBy({ id });
   }
 
-  update(id: number, updateTechnicianDto: UpdateTechnicianDto) {
-    return `This action updates a #${id} technician`;
+  update(id: string, updateTechnicianDto: UpdateTechnicianDto) {
+    return this.technicianRepository.update(id, updateTechnicianDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} technician`;
+  async remove(id: string) {
+    await this.technicianRepository.delete(id);
   }
 }

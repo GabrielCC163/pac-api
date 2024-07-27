@@ -1,7 +1,14 @@
 import { BaseEntity } from '@database/base.entity';
 import { ClientEntity } from '@modules/client/entities/client.entity';
 import { UserEntity } from '@modules/user/entities/user.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+} from 'typeorm';
 
 @Entity('cost_centers')
 export class CostCenterEntity extends BaseEntity {
@@ -12,6 +19,7 @@ export class CostCenterEntity extends BaseEntity {
   businessName?: string;
 
   @Column()
+  @Index({ unique: true })
   cnpj: string;
 
   @Column({ name: 'address_zip_code', nullable: true })

@@ -1,11 +1,17 @@
 import { CreateUserDto } from '@modules/user/dto/create-user.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class CreateCostCenterDto extends CreateUserDto {
   @ApiProperty({ example: '3ed8483b-cb55-4368-ae0a-b3691914bb8b' })
   @IsNotEmpty()
-  @IsString()
+  @IsUUID()
   clientId: string;
 
   @ApiProperty({ example: 'Cost Center LTDA' })
