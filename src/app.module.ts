@@ -13,6 +13,7 @@ import { ClientModule } from './modules/client/client.module';
 import { CostCenterModule } from './modules/cost-center/cost-center.module';
 import { TechnicianModule } from './modules/technician/technician.module';
 import { TechnicalManagerModule } from './modules/technical-manager/technical-manager.module';
+import { FormModule } from './modules/form/form.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { TechnicalManagerModule } from './modules/technical-manager/technical-ma
     CostCenterModule,
     TechnicianModule,
     TechnicalManagerModule,
+    FormModule,
   ],
   controllers: [],
   providers: [
