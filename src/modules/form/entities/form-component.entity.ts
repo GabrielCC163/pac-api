@@ -30,6 +30,9 @@ export class FormComponentEntity {
   @Column({ type: 'enum', enum: FormComponentTypeEnum })
   type: FormComponentTypeEnum;
 
+  @Column()
+  required: boolean;
+
   @ManyToOne(() => FormEntity, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

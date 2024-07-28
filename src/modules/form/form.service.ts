@@ -33,6 +33,7 @@ export class FormService {
         title: component.title,
         subtitle: component.subtitle,
         type: component.type,
+        required: component.required,
         formId: form.id,
       });
     }

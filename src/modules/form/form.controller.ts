@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   HttpCode,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { FormService } from './form.service';
 import { CreateFormDto } from './dto/create-form.dto';
@@ -46,7 +47,7 @@ export class FormController {
     UserRoleEnum.TECHNICIAN,
   ])
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.formService.findOne(id);
   }
 
@@ -57,7 +58,7 @@ export class FormController {
   ])
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string) {
+  remove(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.formService.remove(id);
   }
 }

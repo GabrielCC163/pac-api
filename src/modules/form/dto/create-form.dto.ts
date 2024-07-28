@@ -1,6 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import {
   IsArray,
+  IsBoolean,
+  IsBooleanString,
+  IsDefined,
   IsEnum,
   IsNotEmpty,
   IsOptional,
@@ -27,6 +31,11 @@ class CreateFormComponentDto {
   @IsNotEmpty()
   @IsEnum(FormComponentTypeEnum)
   type: FormComponentTypeEnum;
+
+  @ApiProperty({ example: 'true' })
+  @IsNotEmpty()
+  @IsBooleanString()
+  required: boolean;
 }
 
 export class CreateFormDto {
