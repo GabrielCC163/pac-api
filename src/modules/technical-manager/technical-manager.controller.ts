@@ -32,8 +32,12 @@ export class TechnicalManagerController {
 
   @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER])
   @Get()
-  findAll(@Query() findAllTechnicalManagersQueryDto: FindAllTechnicalManagersQueryDto) {
-    return this.technicalManagerService.findAll(findAllTechnicalManagersQueryDto.costCenterId);
+  findAll(
+    @Query() findAllTechnicalManagersQueryDto: FindAllTechnicalManagersQueryDto,
+  ) {
+    return this.technicalManagerService.findAll(
+      findAllTechnicalManagersQueryDto.costCenterId,
+    );
   }
 
   @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER])

@@ -41,7 +41,7 @@ export class TechnicianService {
 
   findAll(costCenterId: string): Promise<TechnicianEntity[]> {
     return this.technicianRepository.find({
-      where: { costCenterId},
+      where: { costCenterId },
       order: { createdAt: 'DESC' },
     });
   }

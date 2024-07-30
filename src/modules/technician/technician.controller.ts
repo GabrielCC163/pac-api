@@ -31,7 +31,9 @@ export class TechnicianController {
   @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER])
   @Get()
   findAll(@Query() findAllTechniciansQueryDto: FindAllTechniciansQueryDto) {
-    return this.technicianService.findAll(findAllTechniciansQueryDto.costCenterId);
+    return this.technicianService.findAll(
+      findAllTechniciansQueryDto.costCenterId,
+    );
   }
 
   @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER])
