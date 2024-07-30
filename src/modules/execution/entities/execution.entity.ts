@@ -10,10 +10,10 @@ export class ExecutionEntity extends BaseEntity {
     onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'form_id' })
-  costCenter: FormEntity;
+  form: FormEntity;
 
   @Column({ name: 'form_id' })
-  costCenterId: string;
+  formId: string;
 
   @ManyToOne(() => TechnicianEntity, {
     onDelete: 'CASCADE',

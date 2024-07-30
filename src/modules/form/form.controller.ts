@@ -60,7 +60,7 @@ export class FormController {
   ])
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.formService.remove(id);
+  async remove(@Param('id', new ParseUUIDPipe()) id: string) {
+    await this.formService.remove(id);
   }
 }

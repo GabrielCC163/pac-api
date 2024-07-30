@@ -54,7 +54,7 @@ export class TechnicianController {
   @Roles([UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER])
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string) {
-    return this.technicianService.remove(id);
+  async remove(@Param('id') id: string) {
+    await this.technicianService.remove(id);
   }
 }
