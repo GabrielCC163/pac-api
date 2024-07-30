@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { TechnicalManagerService } from './technical-manager.service';
 import { CreateTechnicalManagerDto } from './dto/create-technical-manager.dto';
@@ -14,6 +15,7 @@ import { UpdateTechnicalManagerDto } from './dto/update-technical-manager.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { UserRoleEnum } from '@modules/user/entities/user.entity';
 import { Roles } from '@common/decorators/roles.decorator';
+import { FindAllTechnicalManagersQueryDto } from './dto/find-all-technical-managers-query.dto';
 
 @ApiTags('technical-managers')
 @Controller('technical-managers')
@@ -30,8 +32,8 @@ export class TechnicalManagerController {
 
   @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER])
   @Get()
-  findAll() {
-    return this.technicalManagerService.findAll();
+  findAll(@Query() findAllTechnicalManagersQueryDto: FindAllTechnicalManagersQueryDto) {
+    return this.technicalManagerService.findAll(findAllTechnicalManagersQueryDto.costCenterId);
   }
 
   @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER])

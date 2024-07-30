@@ -7,12 +7,14 @@ import {
   Delete,
   HttpCode,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { FormService } from './form.service';
 import { CreateFormDto } from './dto/create-form.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from '@common/decorators/roles.decorator';
 import { UserRoleEnum } from '@modules/user/entities/user.entity';
+import { FindAllFormsQueryDto } from './dto/find-all-forms-query.dto';
 
 @ApiTags('Forms')
 @Controller('forms')
@@ -37,8 +39,8 @@ export class FormController {
     UserRoleEnum.TECHNICAL_MANAGER,
   ])
   @Get()
-  findAll() {
-    return this.formService.findAll();
+  findAll(@Query() findAllFormsQueryDto: FindAllFormsQueryDto) {
+    return this.formService.findAll(findAllFormsQueryDto.costCenterId);
   }
 
   @Roles([

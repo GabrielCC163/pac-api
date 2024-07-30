@@ -41,8 +41,9 @@ export class FormService {
     return form;
   }
 
-  findAll() {
+  findAll(costCenterId: string): Promise<FormEntity[]> {
     return this.formRepository.find({
+      where: { costCenterId },
       order: { createdAt: 'DESC' },
     });
   }

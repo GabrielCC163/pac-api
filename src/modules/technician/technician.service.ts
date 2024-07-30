@@ -39,8 +39,9 @@ export class TechnicianService {
     });
   }
 
-  findAll() {
+  findAll(costCenterId: string): Promise<TechnicianEntity[]> {
     return this.technicianRepository.find({
+      where: { costCenterId},
       order: { createdAt: 'DESC' },
     });
   }

@@ -39,8 +39,9 @@ export class TechnicalManagerService {
     });
   }
 
-  findAll() {
+  findAll(costCenterId: string): Promise<TechnicalManagerEntity[]> {
     return this.techManagerRepository.find({
+      where: { costCenterId },
       order: { createdAt: 'DESC' },
     });
   }

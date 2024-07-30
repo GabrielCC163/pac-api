@@ -10,10 +10,12 @@ import {
   Delete,
   ParseUUIDPipe,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CostCenterService } from './cost-center.service';
 import { CreateCostCenterDto } from './dto/create-cost-center.dto';
+import { FindAllCostCentersQueryDto } from './dto/find-all-cost-centers-query.dto';
 import { UpdateCostCenterDto } from './dto/update-cost-center.dto';
 
 @ApiTags('Cost centers')
@@ -29,8 +31,8 @@ export class CostCenterController {
 
   @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT])
   @Get()
-  findAll() {
-    return this.costCenterService.findAll();
+  findAll(@Query() findAllCostCentersQueryDto: FindAllCostCentersQueryDto) {
+    return this.costCenterService.findAll(findAllCostCentersQueryDto.clientId);
   }
 
   @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT])

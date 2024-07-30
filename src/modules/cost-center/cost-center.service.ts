@@ -39,8 +39,9 @@ export class CostCenterService {
     });
   }
 
-  findAll() {
+  findAll(clientId: string): Promise<CostCenterEntity[]> {
     return this.costCenterRepository.find({
+      where: { clientId },
       order: { createdAt: 'DESC' },
     });
   }
