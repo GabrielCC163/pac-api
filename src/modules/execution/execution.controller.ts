@@ -3,13 +3,11 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
 } from '@nestjs/common';
 import { ExecutionService } from './execution.service';
 import { CreateExecutionDto } from './dto/create-execution.dto';
-import { UpdateExecutionDto } from './dto/update-execution.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Executions')
@@ -29,19 +27,11 @@ export class ExecutionController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.executionService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateExecutionDto: UpdateExecutionDto,
-  ) {
-    return this.executionService.update(+id, updateExecutionDto);
+    return this.executionService.findOne(id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.executionService.remove(+id);
+    return this.executionService.remove(id);
   }
 }

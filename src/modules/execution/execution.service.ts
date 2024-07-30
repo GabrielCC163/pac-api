@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateExecutionDto } from './dto/create-execution.dto';
-import { UpdateExecutionDto } from './dto/update-execution.dto';
 
 @Injectable()
 export class ExecutionService {
@@ -12,15 +11,11 @@ export class ExecutionService {
     return `This action returns all execution`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} execution`;
   }
 
-  update(id: number, updateExecutionDto: UpdateExecutionDto) {
-    return `This action updates a #${id} execution`;
-  }
-
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} execution`;
   }
 }
