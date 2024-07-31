@@ -21,43 +21,31 @@ import { FindAllFormsQueryDto } from './dto/find-all-forms-query.dto';
 export class FormController {
   constructor(private readonly formService: FormService) {}
 
-  @Roles([
-    UserRoleEnum.ADMIN,
-    UserRoleEnum.COST_CENTER,
-    UserRoleEnum.TECHNICIAN,
-  ])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER, UserRoleEnum.TECHNICIAN)
   @Post()
   create(@Body() createFormDto: CreateFormDto) {
     return this.formService.create(createFormDto);
   }
 
-  @Roles([
+  @Roles(
     UserRoleEnum.ADMIN,
     UserRoleEnum.CLIENT,
     UserRoleEnum.COST_CENTER,
     UserRoleEnum.TECHNICIAN,
     UserRoleEnum.TECHNICAL_MANAGER,
-  ])
+  )
   @Get()
   findAll(@Query() findAllFormsQueryDto: FindAllFormsQueryDto) {
     return this.formService.findAll(findAllFormsQueryDto.costCenterId);
   }
 
-  @Roles([
-    UserRoleEnum.ADMIN,
-    UserRoleEnum.COST_CENTER,
-    UserRoleEnum.TECHNICIAN,
-  ])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER, UserRoleEnum.TECHNICIAN)
   @Get(':id')
   findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.formService.findOne(id);
   }
 
-  @Roles([
-    UserRoleEnum.ADMIN,
-    UserRoleEnum.COST_CENTER,
-    UserRoleEnum.TECHNICIAN,
-  ])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER, UserRoleEnum.TECHNICIAN)
   @Delete(':id')
   @HttpCode(204)
   async remove(@Param('id', new ParseUUIDPipe()) id: string) {

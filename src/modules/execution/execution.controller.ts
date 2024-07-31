@@ -19,42 +19,42 @@ import { CurrentUser } from '@common/decorators/current-user.decorator';
 export class ExecutionController {
   constructor(private readonly executionService: ExecutionService) {}
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.TECHNICIAN])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.TECHNICIAN)
   @Post()
   create(@Body() createExecutionDto: CreateExecutionDto) {
     return this.executionService.create(createExecutionDto);
   }
 
-  @Roles([
+  @Roles(
     UserRoleEnum.ADMIN,
     UserRoleEnum.CLIENT,
     UserRoleEnum.COST_CENTER,
     UserRoleEnum.TECHNICAL_MANAGER,
     UserRoleEnum.TECHNICIAN,
-  ])
+  )
   @Get()
   findAll() {
     return this.executionService.findAll();
   }
 
-  @Roles([
+  @Roles(
     UserRoleEnum.ADMIN,
     UserRoleEnum.CLIENT,
     UserRoleEnum.COST_CENTER,
     UserRoleEnum.TECHNICAL_MANAGER,
     UserRoleEnum.TECHNICIAN,
-  ])
+  )
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.executionService.findOne(id);
   }
 
-  @Roles([
+  @Roles(
     UserRoleEnum.ADMIN,
     UserRoleEnum.CLIENT,
     UserRoleEnum.COST_CENTER,
     UserRoleEnum.TECHNICIAN,
-  ])
+  )
   @Delete(':id')
   @HttpCode(204)
   async remove(@CurrentUser() user: UserEntity, @Param('id') id: string) {

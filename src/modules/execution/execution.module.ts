@@ -7,7 +7,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TechnicianEntity } from '@modules/technician/entities/technician.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ExecutionEntity, ExecutionValueEntity, TechnicianEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      ExecutionEntity,
+      ExecutionValueEntity,
+      TechnicianEntity,
+    ]),
+  ],
   controllers: [ExecutionController],
   providers: [ExecutionService],
 })

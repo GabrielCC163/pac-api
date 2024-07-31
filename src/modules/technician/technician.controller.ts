@@ -22,13 +22,13 @@ import { FindAllTechniciansQueryDto } from './dto/find-all-technicians-query.dto
 export class TechnicianController {
   constructor(private readonly technicianService: TechnicianService) {}
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
   @Post()
   create(@Body() createTechnicianDto: CreateTechnicianDto) {
     return this.technicianService.create(createTechnicianDto);
   }
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER)
   @Get()
   findAll(@Query() findAllTechniciansQueryDto: FindAllTechniciansQueryDto) {
     return this.technicianService.findAll(
@@ -36,13 +36,13 @@ export class TechnicianController {
     );
   }
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.technicianService.findOne(id);
   }
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -51,7 +51,7 @@ export class TechnicianController {
     return this.technicianService.update(id, updateTechnicianDto);
   }
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
   @Delete(':id')
   @HttpCode(204)
   async remove(@Param('id') id: string) {

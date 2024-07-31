@@ -23,19 +23,19 @@ import { UpdateCostCenterDto } from './dto/update-cost-center.dto';
 export class CostCenterController {
   constructor(private readonly costCenterService: CostCenterService) {}
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT)
   @Post()
   create(@Body() createCostCenterDto: CreateCostCenterDto) {
     return this.costCenterService.create(createCostCenterDto);
   }
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT)
   @Get()
   findAll(@Query() findAllCostCentersQueryDto: FindAllCostCentersQueryDto) {
     return this.costCenterService.findAll(findAllCostCentersQueryDto.clientId);
   }
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT)
   @Patch(':id')
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
@@ -44,7 +44,7 @@ export class CostCenterController {
     return this.costCenterService.update(id, updateCostCenterDto);
   }
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT)
   @Delete(':id')
   @HttpCode(204)
   async remove(@Param('id', new ParseUUIDPipe()) id: string) {

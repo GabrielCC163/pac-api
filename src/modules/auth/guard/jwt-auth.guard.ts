@@ -19,15 +19,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return true;
     }
 
-    const roles = this.reflector.get<string[]>(ROLES_KEY, context.getHandler());
-    if (!roles) {
-      return true;
-    }
-    const { user } = context.switchToHttp().getRequest();
-    if (!user || !roles.includes(user.role)) {
-      return false;
-    }
-
     return super.canActivate(context);
   }
 }

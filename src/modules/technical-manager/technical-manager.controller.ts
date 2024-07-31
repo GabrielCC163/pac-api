@@ -24,13 +24,13 @@ export class TechnicalManagerController {
     private readonly technicalManagerService: TechnicalManagerService,
   ) {}
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
   @Post()
   create(@Body() createTechnicalManagerDto: CreateTechnicalManagerDto) {
     return this.technicalManagerService.create(createTechnicalManagerDto);
   }
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER)
   @Get()
   findAll(
     @Query() findAllTechnicalManagersQueryDto: FindAllTechnicalManagersQueryDto,
@@ -40,13 +40,13 @@ export class TechnicalManagerController {
     );
   }
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.technicalManagerService.findOne(id);
   }
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -55,7 +55,7 @@ export class TechnicalManagerController {
     return this.technicalManagerService.update(id, updateTechnicalManagerDto);
   }
 
-  @Roles([UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER])
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
   @Delete(':id')
   @HttpCode(204)
   async remove(@Param('id') id: string) {
