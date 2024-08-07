@@ -45,6 +45,10 @@ export class ClientService {
     });
   }
 
+  findOne(id: string) {
+    return this.clientRepository.findOneBy({ id });
+  }
+
   update(id: string, updateClientDto: UpdateClientDto) {
     return this.clientRepository.update(id, updateClientDto);
   }

@@ -36,6 +36,11 @@ export class ClientController {
     return this.clientService.findAll();
   }
 
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT)
+  findOne(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.clientService.findOne(id);
+  }
+
   @Roles(UserRoleEnum.ADMIN)
   @Patch(':id')
   update(

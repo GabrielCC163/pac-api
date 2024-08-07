@@ -35,6 +35,7 @@ export class CostCenterController {
     return this.costCenterService.findAll(findAllCostCentersQueryDto.clientId);
   }
 
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT)
   findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.costCenterService.findOne(id);
   }
