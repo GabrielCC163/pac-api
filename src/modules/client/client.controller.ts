@@ -37,6 +37,7 @@ export class ClientController {
   }
 
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT)
+  @Get(':id')
   findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.clientService.findOne(id);
   }
