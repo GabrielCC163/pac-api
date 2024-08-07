@@ -46,6 +46,10 @@ export class CostCenterService {
     });
   }
 
+  findOne(id: string) {
+    return this.costCenterRepository.findOneBy({ id });
+  }
+
   update(id: string, updateCostCenterDto: UpdateCostCenterDto) {
     return this.costCenterRepository.update(id, updateCostCenterDto);
   }
