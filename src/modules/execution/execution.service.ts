@@ -67,13 +67,12 @@ export class ExecutionService {
         secretAccessKey: this.s3SecretAccessKey,
       },
     });
-    // const expiresIn = 5000;
-    const expiresIn = 60000;
+    const expiresIn = 300;
     const s3Params = {
       Bucket: bucket,
       Key: key,
     };
-    const command = new PutObjectCommand({...s3Params });
+    const command = new PutObjectCommand(s3Params);
     return getSignedUrl(client, command, { expiresIn });
   };
 
@@ -89,7 +88,9 @@ export class ExecutionService {
       url: s3PutURL,
       location: `https://${this.s3Bucket}.s3.amazonaws.com/${key}`,
     };
+    // curl -X PUT -T file.png -H "Content-Type: image/png" "https://pac2024.s3.sa-east-1.amazonaws.com/image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQLVQQUWUKO5EZRIO%2F20240810%2Fsa-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240810T160249Z&X-Amz-Expires=300&X-Amz-Signature=2f8f250adf06215620ff94773e078e886132c5617b0f96568be92a3f09ccc2d8&X-Amz-SignedHeaders=host&x-id=PutObject"
   }
+
 
   findAll(queryDto: FindAllExecutionsQueryDto): Promise<ExecutionEntity[]> {
     return this.executionRepository.find({
