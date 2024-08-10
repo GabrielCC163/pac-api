@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { ExecutionService } from './execution.service';
 import { CreateExecutionDto } from './dto/create-execution.dto';
@@ -13,6 +14,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { Roles } from '@common/decorators/roles.decorator';
 import { UserEntity, UserRoleEnum } from '@modules/user/entities/user.entity';
 import { CurrentUser } from '@common/decorators/current-user.decorator';
+import { GetUploadUrlDto } from './dto/get-upload-url.dto';
+import { FindAllExecutionsQueryDto } from './dto/find-all-executions-query.dto';
 
 @ApiTags('Executions')
 @Controller('executions')
@@ -27,14 +30,24 @@ export class ExecutionController {
 
   @Roles(
     UserRoleEnum.ADMIN,
+    UserRoleEnum.TECHNICAL_MANAGER,
+    UserRoleEnum.TECHNICIAN,
+  )
+  @Get('s3/upload-url')
+  getUploadUrl(@Body() getUploadUrlDto: GetUploadUrlDto) {
+    return this.executionService.getUploadUrl(getUploadUrlDto);
+  }
+
+  @Roles(
+    UserRoleEnum.ADMIN,
     UserRoleEnum.CLIENT,
     UserRoleEnum.COST_CENTER,
     UserRoleEnum.TECHNICAL_MANAGER,
     UserRoleEnum.TECHNICIAN,
   )
   @Get()
-  findAll() {
-    return this.executionService.findAll();
+  findAll(@Query() queryDto: FindAllExecutionsQueryDto) {
+    return this.executionService.findAll(queryDto);
   }
 
   @Roles(

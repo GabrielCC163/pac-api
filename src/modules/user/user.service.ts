@@ -52,36 +52,46 @@ export class UserService {
   }
 
   async findCurrentUser(user: UserEntity) {
+    if (user.role === UserRoleEnum.ADMIN) {
+      return user;
+    }
+
     if (user.role === UserRoleEnum.CLIENT) {
       const client = await this.clientRepository.findOneBy({ userId: user.id });
       return {
         ...user,
-        client
-      }
+        client,
+      };
     }
 
     if (user.role === UserRoleEnum.COST_CENTER) {
-      const costCenter = await this.costCenterRepository.findOneBy({ userId: user.id });
+      const costCenter = await this.costCenterRepository.findOneBy({
+        userId: user.id,
+      });
       return {
         ...user,
-        costCenter
-      }
+        costCenter,
+      };
     }
 
     if (user.role === UserRoleEnum.TECHNICIAN) {
-      const technician = await this.technicianRepository.findOneBy({ userId: user.id });
+      const technician = await this.technicianRepository.findOneBy({
+        userId: user.id,
+      });
       return {
         ...user,
-        technician
-      }
+        technician,
+      };
     }
 
     if (user.role === UserRoleEnum.TECHNICAL_MANAGER) {
-      const technicalManager = await this.technicalManagerRepository.findOneBy({ userId: user.id });
+      const technicalManager = await this.technicalManagerRepository.findOneBy({
+        userId: user.id,
+      });
       return {
         ...user,
-        technicalManager
-      }
+        technicalManager,
+      };
     }
   }
 }

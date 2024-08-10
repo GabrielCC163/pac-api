@@ -24,7 +24,8 @@ export class UserController {
   @ApiBearerAuth()
   @Get('current-user')
   @ApiOkResponse({ type: UserResponseDto, description: 'Logged in user' })
-  findCurrentUser(@CurrentUser() user: UserEntity) {
-    return this.userService.findCurrentUser(user);
+  async findCurrentUser(@CurrentUser() user: UserEntity) {
+    console.log(user)
+    return await this.userService.findCurrentUser(user);
   }
 }
