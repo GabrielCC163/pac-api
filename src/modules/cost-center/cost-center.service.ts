@@ -1,6 +1,6 @@
 import { UserRoleEnum } from '@modules/user/entities/user.entity';
 import { UserService } from '@modules/user/user.service';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCostCenterDto } from './dto/create-cost-center.dto';
@@ -54,8 +54,27 @@ export class CostCenterService {
     });
   }
 
-  update(id: string, updateCostCenterDto: UpdateCostCenterDto) {
-    return this.costCenterRepository.update(id, updateCostCenterDto);
+  async update(id: string, updateCostCenterDto: UpdateCostCenterDto) {
+    const costCenter = await this.costCenterRepository.findOneBy({ id });
+    if (!costCenter) throw new NotFoundException('Cost center not found');
+    if (updateCostCenterDto.email || updateCostCenterDto.password) {
+      const userUpdateData = {
+        email: updateCostCenterDto.email,
+        password: updateCostCenterDto.password,
+      }
+
+      await this.userService.update(costCenter.userId, userUpdateData);
+    }
+
+    delete updateCostCenterDto.email;
+    delete updateCostCenterDto.password;
+    const costCenterUpdateData = {
+      ...updateCostCenterDto,
+      companyName: updateCostCenterDto.companyName || costCenter.companyName,
+      cnpj: updateCostCenterDto.cnpj || costCenter.cnpj
+    }
+
+    await this.costCenterRepository.update(id, costCenterUpdateData);
   }
 
   async remove(id: string) {
