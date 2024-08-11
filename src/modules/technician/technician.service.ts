@@ -56,20 +56,22 @@ export class TechnicianService {
 
   async update(id: string, updateTechnicianDto: UpdateTechnicianDto) {
     const technician = await this.findOne(id);
-    if (!technician) throw new NotFoundException('Technician does not exists');
+    if (!technician) throw new NotFoundException('Technician not found');
     const technicianUpdateData = {
       name: updateTechnicianDto.name || technician.name,
       document: updateTechnicianDto.document || technician.document,
-      phone: updateTechnicianDto.phone || technician.phone
+      phone: updateTechnicianDto.phone
     }
     await this.technicianRepository.update(id, technicianUpdateData);
 
-    const userUpdateData = {
-      email: updateTechnicianDto.email,
-      password: updateTechnicianDto.password,
-    }
+    if (updateTechnicianDto.email || updateTechnicianDto.password) {
+      const userUpdateData = {
+        email: updateTechnicianDto.email,
+        password: updateTechnicianDto.password,
+      }
 
-    await this.userService.update(technician.userId, userUpdateData);
+      await this.userService.update(technician.userId, userUpdateData);
+    }
   }
 
   async remove(id: string) {

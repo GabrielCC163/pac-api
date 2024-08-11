@@ -1,6 +1,6 @@
 import { UserRoleEnum } from '@modules/user/entities/user.entity';
 import { UserService } from '@modules/user/user.service';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateClientDto } from './dto/create-client.dto';
@@ -53,8 +53,28 @@ export class ClientService {
     });
   }
 
-  update(id: string, updateClientDto: UpdateClientDto) {
-    return this.clientRepository.update(id, updateClientDto);
+  async update(id: string, updateClientDto: UpdateClientDto) {
+    const client = await this.clientRepository.findOneBy({ id });
+    if (!client) throw new NotFoundException('Client not found');
+
+    if (updateClientDto.email || updateClientDto.password) {
+      const userUpdateData = {
+        email: updateClientDto.email,
+        password: updateClientDto.password,
+      }
+
+      await this.userService.update(client.userId, userUpdateData);
+    }
+
+    delete updateClientDto.email;
+    delete updateClientDto.password;
+    const clientUpdateData = {
+      ...updateClientDto,
+      companyName: updateClientDto.companyName || client.companyName,
+      cnpj: updateClientDto.cnpj || client.cnpj
+    }
+
+    await this.clientRepository.update(id, clientUpdateData);
   }
 
   async remove(id: string) {
