@@ -60,7 +60,7 @@ export class UserService {
     const user = await this.userRepository.findOneBy({ id });
     const updateData = {
       email: data.email || user.email,
-    }
+    };
     if (data.password) {
       const password = await bcrypt.hash(data.password, 10);
       updateData['password'] = password;

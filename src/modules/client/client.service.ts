@@ -1,6 +1,10 @@
 import { UserRoleEnum } from '@modules/user/entities/user.entity';
 import { UserService } from '@modules/user/user.service';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateClientDto } from './dto/create-client.dto';
@@ -61,7 +65,7 @@ export class ClientService {
       const userUpdateData = {
         email: updateClientDto.email,
         password: updateClientDto.password,
-      }
+      };
 
       await this.userService.update(client.userId, userUpdateData);
     }
@@ -71,8 +75,8 @@ export class ClientService {
     const clientUpdateData = {
       ...updateClientDto,
       companyName: updateClientDto.companyName || client.companyName,
-      cnpj: updateClientDto.cnpj || client.cnpj
-    }
+      cnpj: updateClientDto.cnpj || client.cnpj,
+    };
 
     await this.clientRepository.update(id, clientUpdateData);
   }

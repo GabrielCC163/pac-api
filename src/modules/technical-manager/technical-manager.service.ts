@@ -1,6 +1,10 @@
 import { UserRoleEnum } from '@modules/user/entities/user.entity';
 import { UserService } from '@modules/user/user.service';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTechnicalManagerDto } from './dto/create-technical-manager.dto';
@@ -54,7 +58,10 @@ export class TechnicalManagerService {
     });
   }
 
-  async update(id: string, updateTechnicalManagerDto: UpdateTechnicalManagerDto) {
+  async update(
+    id: string,
+    updateTechnicalManagerDto: UpdateTechnicalManagerDto,
+  ) {
     const manager = await this.techManagerRepository.findOneBy({ id });
     if (!manager) throw new NotFoundException('Technical manager not found');
 
@@ -62,19 +69,19 @@ export class TechnicalManagerService {
       const userUpdateData = {
         email: updateTechnicalManagerDto.email,
         password: updateTechnicalManagerDto.password,
-      }
+      };
 
       await this.userService.update(manager.userId, userUpdateData);
     }
 
     delete updateTechnicalManagerDto.email;
     delete updateTechnicalManagerDto.password;
-    
+
     const managerUpdateData = {
       name: updateTechnicalManagerDto.name || manager.name,
       document: updateTechnicalManagerDto.document || manager.document,
-      phone: updateTechnicalManagerDto.phone
-    }
+      phone: updateTechnicalManagerDto.phone,
+    };
 
     await this.techManagerRepository.update(id, managerUpdateData);
   }

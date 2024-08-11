@@ -1,6 +1,10 @@
 import { UserRoleEnum } from '@modules/user/entities/user.entity';
 import { UserService } from '@modules/user/user.service';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTechnicianDto } from './dto/create-technician.dto';
@@ -60,15 +64,15 @@ export class TechnicianService {
     const technicianUpdateData = {
       name: updateTechnicianDto.name || technician.name,
       document: updateTechnicianDto.document || technician.document,
-      phone: updateTechnicianDto.phone
-    }
+      phone: updateTechnicianDto.phone,
+    };
     await this.technicianRepository.update(id, technicianUpdateData);
 
     if (updateTechnicianDto.email || updateTechnicianDto.password) {
       const userUpdateData = {
         email: updateTechnicianDto.email,
         password: updateTechnicianDto.password,
-      }
+      };
 
       await this.userService.update(technician.userId, userUpdateData);
     }
