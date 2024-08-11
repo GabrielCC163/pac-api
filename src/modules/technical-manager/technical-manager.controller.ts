@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   Query,
+  Put,
 } from '@nestjs/common';
 import { TechnicalManagerService } from './technical-manager.service';
 import { CreateTechnicalManagerDto } from './dto/create-technical-manager.dto';
@@ -47,12 +48,13 @@ export class TechnicalManagerController {
   }
 
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
-  @Patch(':id')
-  update(
+  @Put(':id')
+  @HttpCode(200)
+  async update(
     @Param('id') id: string,
     @Body() updateTechnicalManagerDto: UpdateTechnicalManagerDto,
   ) {
-    return this.technicalManagerService.update(id, updateTechnicalManagerDto);
+    await this.technicalManagerService.update(id, updateTechnicalManagerDto);
   }
 
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)

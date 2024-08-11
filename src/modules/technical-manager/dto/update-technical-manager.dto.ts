@@ -1,6 +1,6 @@
-import { PartialType } from '@nestjs/swagger';
+import { OmitType } from '@nestjs/swagger';
 import { CreateTechnicalManagerDto } from './create-technical-manager.dto';
 
-export class UpdateTechnicalManagerDto extends PartialType(
-  CreateTechnicalManagerDto,
+export class UpdateTechnicalManagerDto extends OmitType(
+  CreateTechnicalManagerDto, ['costCenterId', 'role']
 ) {}
