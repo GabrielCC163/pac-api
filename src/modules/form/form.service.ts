@@ -44,12 +44,16 @@ export class FormService {
   findAll(costCenterId: string): Promise<FormEntity[]> {
     return this.formRepository.find({
       where: { costCenterId },
+      relations: { costCenter: true },
       order: { createdAt: 'DESC' },
     });
   }
 
   findOne(id: string) {
-    return this.formRepository.findOneBy({ id });
+    return this.formRepository.findOne({
+      where: { id },
+      relations: { costCenter: true },
+    });
   }
 
   async remove(id: string) {
