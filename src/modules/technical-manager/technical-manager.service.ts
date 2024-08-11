@@ -42,12 +42,16 @@ export class TechnicalManagerService {
   findAll(costCenterId: string): Promise<TechnicalManagerEntity[]> {
     return this.techManagerRepository.find({
       where: { costCenterId },
+      relations: { costCenter: true, user: true },
       order: { createdAt: 'DESC' },
     });
   }
 
   findOne(id: string) {
-    return this.techManagerRepository.findOneBy({ id });
+    return this.techManagerRepository.findOne({
+      where: { id },
+      relations: { costCenter: true, user: true },
+    });
   }
 
   update(id: string, updateTechnicalManagerDto: UpdateTechnicalManagerDto) {

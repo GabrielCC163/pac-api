@@ -42,12 +42,16 @@ export class TechnicianService {
   findAll(costCenterId: string): Promise<TechnicianEntity[]> {
     return this.technicianRepository.find({
       where: { costCenterId },
+      relations: { costCenter: true, user: true },
       order: { createdAt: 'DESC' },
     });
   }
 
   findOne(id: string): Promise<TechnicianEntity> {
-    return this.technicianRepository.findOneBy({ id });
+    return this.technicianRepository.findOne({
+      where: { id },
+      relations: { costCenter: true, user: true },
+    });
   }
 
   update(id: string, updateTechnicianDto: UpdateTechnicianDto) {

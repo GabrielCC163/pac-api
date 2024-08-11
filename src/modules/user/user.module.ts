@@ -9,7 +9,15 @@ import { TechnicianEntity } from '@modules/technician/entities/technician.entity
 import { TechnicalManagerEntity } from '@modules/technical-manager/entities/technical-manager.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, ClientEntity, CostCenterEntity, TechnicianEntity, TechnicalManagerEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      UserEntity,
+      ClientEntity,
+      CostCenterEntity,
+      TechnicianEntity,
+      TechnicalManagerEntity,
+    ]),
+  ],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],

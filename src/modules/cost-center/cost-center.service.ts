@@ -42,12 +42,16 @@ export class CostCenterService {
   findAll(clientId: string): Promise<CostCenterEntity[]> {
     return this.costCenterRepository.find({
       where: { clientId },
+      relations: { client: true, user: true },
       order: { createdAt: 'DESC' },
     });
   }
 
   findOne(id: string) {
-    return this.costCenterRepository.findOneBy({ id });
+    return this.costCenterRepository.findOne({
+      where: { id },
+      relations: { client: true, user: true },
+    });
   }
 
   update(id: string, updateCostCenterDto: UpdateCostCenterDto) {

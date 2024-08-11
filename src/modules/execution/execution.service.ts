@@ -91,16 +91,19 @@ export class ExecutionService {
     // curl -X PUT -T file.png -H "Content-Type: image/png" "https://pac2024.s3.sa-east-1.amazonaws.com/image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQLVQQUWUKO5EZRIO%2F20240810%2Fsa-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240810T160249Z&X-Amz-Expires=300&X-Amz-Signature=2f8f250adf06215620ff94773e078e886132c5617b0f96568be92a3f09ccc2d8&X-Amz-SignedHeaders=host&x-id=PutObject"
   }
 
-
   findAll(queryDto: FindAllExecutionsQueryDto): Promise<ExecutionEntity[]> {
     return this.executionRepository.find({
       where: { formId: queryDto.formId },
+      relations: { technician: true },
       order: { createdAt: 'DESC' },
     });
   }
 
   findOne(id: string) {
-    return this.executionRepository.findOneBy({ id });
+    return this.executionRepository.findOne({
+      where: { id },
+      relations: { technician: true },
+    });
   }
 
   async remove(user: UserEntity, id: string) {

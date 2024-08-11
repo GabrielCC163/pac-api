@@ -25,7 +25,7 @@ export class UserController {
   @Get('current-user')
   @ApiOkResponse({ type: UserResponseDto, description: 'Logged in user' })
   async findCurrentUser(@CurrentUser() user: UserEntity) {
-    console.log(user)
+    console.log(user);
     return await this.userService.findCurrentUser(user);
   }
 }

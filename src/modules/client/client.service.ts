@@ -41,12 +41,16 @@ export class ClientService {
 
   findAll() {
     return this.clientRepository.find({
+      relations: { user: true },
       order: { createdAt: 'DESC' },
     });
   }
 
   findOne(id: string) {
-    return this.clientRepository.findOneBy({ id });
+    return this.clientRepository.findOne({
+      where: { id },
+      relations: { user: true },
+    });
   }
 
   update(id: string, updateClientDto: UpdateClientDto) {
