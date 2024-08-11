@@ -3,11 +3,11 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   HttpCode,
   Query,
+  Put,
 } from '@nestjs/common';
 import { TechnicianService } from './technician.service';
 import { CreateTechnicianDto } from './dto/create-technician.dto';
@@ -43,12 +43,13 @@ export class TechnicianController {
   }
 
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
-  @Patch(':id')
-  update(
+  @Put(':id')
+  @HttpCode(200)
+  async update(
     @Param('id') id: string,
     @Body() updateTechnicianDto: UpdateTechnicianDto,
   ) {
-    return this.technicianService.update(id, updateTechnicianDto);
+    await this.technicianService.update(id, updateTechnicianDto);
   }
 
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)

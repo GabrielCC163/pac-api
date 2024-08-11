@@ -9,6 +9,7 @@ import { ClientEntity } from '@modules/client/entities/client.entity';
 import { CostCenterEntity } from '@modules/cost-center/entities/cost-center.entity';
 import { TechnicianEntity } from '@modules/technician/entities/technician.entity';
 import { TechnicalManagerEntity } from '@modules/technical-manager/entities/technical-manager.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -49,6 +50,23 @@ export class UserService {
       .where('user.email = :email', { email })
       .addSelect('user.password')
       .getOne();
+  }
+
+  findUserById(id: string): Promise<UserEntity> {
+    return this.userRepository.findOneBy({ id });
+  }
+
+  async update(id: string, data: UpdateUserDto) {
+    const user = await this.userRepository.findOneBy({ id });
+    const updateData = {
+      email: data.email || user.email,
+    }
+    if (data.password) {
+      const password = await bcrypt.hash(data.password, 10);
+      updateData['password'] = password;
+    }
+
+    await this.userRepository.update(id, updateData);
   }
 
   async findCurrentUser(user: UserEntity) {

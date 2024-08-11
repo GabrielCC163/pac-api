@@ -1,6 +1,6 @@
 import { UserRoleEnum } from '@modules/user/entities/user.entity';
 import { UserService } from '@modules/user/user.service';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTechnicianDto } from './dto/create-technician.dto';
@@ -54,8 +54,22 @@ export class TechnicianService {
     });
   }
 
-  update(id: string, updateTechnicianDto: UpdateTechnicianDto) {
-    return this.technicianRepository.update(id, updateTechnicianDto);
+  async update(id: string, updateTechnicianDto: UpdateTechnicianDto) {
+    const technician = await this.findOne(id);
+    if (!technician) throw new NotFoundException('Technician does not exists');
+    const technicianUpdateData = {
+      name: updateTechnicianDto.name || technician.name,
+      document: updateTechnicianDto.document || technician.document,
+      phone: updateTechnicianDto.phone || technician.phone
+    }
+    await this.technicianRepository.update(id, technicianUpdateData);
+
+    const userUpdateData = {
+      email: updateTechnicianDto.email,
+      password: updateTechnicianDto.password,
+    }
+
+    await this.userService.update(technician.userId, userUpdateData);
   }
 
   async remove(id: string) {
