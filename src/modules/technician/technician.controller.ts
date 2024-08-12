@@ -22,7 +22,7 @@ import { FindAllTechniciansQueryDto } from './dto/find-all-technicians-query.dto
 export class TechnicianController {
   constructor(private readonly technicianService: TechnicianService) {}
 
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER)
   @Post()
   create(@Body() createTechnicianDto: CreateTechnicianDto) {
     return this.technicianService.create(createTechnicianDto);
@@ -42,7 +42,7 @@ export class TechnicianController {
     return this.technicianService.findOne(id);
   }
 
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER)
   @Put(':id')
   @HttpCode(200)
   async update(
@@ -52,7 +52,7 @@ export class TechnicianController {
     await this.technicianService.update(id, updateTechnicianDto);
   }
 
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER)
   @Delete(':id')
   @HttpCode(204)
   async remove(@Param('id') id: string) {

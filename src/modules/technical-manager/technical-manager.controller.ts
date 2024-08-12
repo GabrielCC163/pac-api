@@ -25,7 +25,7 @@ export class TechnicalManagerController {
     private readonly technicalManagerService: TechnicalManagerService,
   ) {}
 
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER)
   @Post()
   create(@Body() createTechnicalManagerDto: CreateTechnicalManagerDto) {
     return this.technicalManagerService.create(createTechnicalManagerDto);
@@ -47,7 +47,7 @@ export class TechnicalManagerController {
     return this.technicalManagerService.findOne(id);
   }
 
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER)
   @Put(':id')
   @HttpCode(200)
   async update(
@@ -57,7 +57,7 @@ export class TechnicalManagerController {
     await this.technicalManagerService.update(id, updateTechnicalManagerDto);
   }
 
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER)
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER)
   @Delete(':id')
   @HttpCode(204)
   async remove(@Param('id') id: string) {
