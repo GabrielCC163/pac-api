@@ -1,6 +1,10 @@
 import { UserRoleEnum } from '@modules/user/entities/user.entity';
 import { UserService } from '@modules/user/user.service';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTechnicianDto } from './dto/create-technician.dto';
@@ -42,16 +46,36 @@ export class TechnicianService {
   findAll(costCenterId: string): Promise<TechnicianEntity[]> {
     return this.technicianRepository.find({
       where: { costCenterId },
+      relations: { costCenter: true, user: true },
       order: { createdAt: 'DESC' },
     });
   }
 
   findOne(id: string): Promise<TechnicianEntity> {
-    return this.technicianRepository.findOneBy({ id });
+    return this.technicianRepository.findOne({
+      where: { id },
+      relations: { costCenter: true, user: true },
+    });
   }
 
-  update(id: string, updateTechnicianDto: UpdateTechnicianDto) {
-    return this.technicianRepository.update(id, updateTechnicianDto);
+  async update(id: string, updateTechnicianDto: UpdateTechnicianDto) {
+    const technician = await this.findOne(id);
+    if (!technician) throw new NotFoundException('Technician not found');
+    const technicianUpdateData = {
+      name: updateTechnicianDto.name || technician.name,
+      document: updateTechnicianDto.document || technician.document,
+      phone: updateTechnicianDto.phone,
+    };
+    await this.technicianRepository.update(id, technicianUpdateData);
+
+    if (updateTechnicianDto.email || updateTechnicianDto.password) {
+      const userUpdateData = {
+        email: updateTechnicianDto.email,
+        password: updateTechnicianDto.password,
+      };
+
+      await this.userService.update(technician.userId, userUpdateData);
+    }
   }
 
   async remove(id: string) {

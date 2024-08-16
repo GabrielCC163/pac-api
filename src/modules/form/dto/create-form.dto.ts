@@ -36,6 +36,12 @@ class CreateFormComponentDto {
   @IsNotEmpty()
   @IsBooleanString()
   required: boolean;
+
+  @ApiPropertyOptional({example: ['option-1', 'option-2']})
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  options?: string[];
 }
 
 export class CreateFormDto {

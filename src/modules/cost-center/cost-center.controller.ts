@@ -5,12 +5,12 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   ParseUUIDPipe,
   HttpCode,
   Query,
+  Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CostCenterService } from './cost-center.service';
@@ -36,12 +36,19 @@ export class CostCenterController {
   }
 
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT)
-  @Patch(':id')
-  update(
+  @Get(':id')
+  findOne(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.costCenterService.findOne(id);
+  }
+
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT)
+  @Put(':id')
+  @HttpCode(200)
+  async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateCostCenterDto: UpdateCostCenterDto,
   ) {
-    return this.costCenterService.update(id, updateCostCenterDto);
+    await this.costCenterService.update(id, updateCostCenterDto);
   }
 
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT)

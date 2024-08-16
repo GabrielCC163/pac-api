@@ -8,7 +8,7 @@ export class LoginUserDto {
   @IsString()
   readonly email: string;
 
-  @ApiProperty({ example: '123123' })
+  @ApiProperty({ example: 'abc123' })
   @IsNotEmpty()
   @IsString()
   readonly password: string;

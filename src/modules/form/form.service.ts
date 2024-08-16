@@ -44,6 +44,7 @@ export class FormService {
   findAll(costCenterId: string): Promise<FormEntity[]> {
     return this.formRepository.find({
       where: { costCenterId },
+      relations: { costCenter: true },
       order: { createdAt: 'DESC' },
     });
   }
@@ -51,7 +52,7 @@ export class FormService {
   findOne(id: string) {
     return this.formRepository.findOne({ 
       where: { id },
-      relations: { components: true }
+      relations: { components: true, costCenter: true }
      });
   }
 

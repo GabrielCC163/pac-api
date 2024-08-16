@@ -1,17 +1,15 @@
 import { Roles } from '@common/decorators/roles.decorator';
-import { RolesGuard } from '@modules/auth/guard/roles.guard';
 import { UserRoleEnum } from '@modules/user/entities/user.entity';
 import {
   Controller,
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   HttpCode,
   ParseUUIDPipe,
-  UseGuards,
+  Put,
 } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ClientService } from './client.service';
@@ -36,13 +34,20 @@ export class ClientController {
     return this.clientService.findAll();
   }
 
+  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT)
+  @Get(':id')
+  findOne(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.clientService.findOne(id);
+  }
+
   @Roles(UserRoleEnum.ADMIN)
-  @Patch(':id')
-  update(
+  @Put(':id')
+  @HttpCode(200)
+  async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateClientDto: UpdateClientDto,
   ) {
-    return this.clientService.update(id, updateClientDto);
+    await this.clientService.update(id, updateClientDto);
   }
 
   @Roles(UserRoleEnum.ADMIN)
