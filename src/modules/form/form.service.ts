@@ -49,7 +49,10 @@ export class FormService {
   }
 
   findOne(id: string) {
-    return this.formRepository.findOneBy({ id });
+    return this.formRepository.findOne({ 
+      where: { id },
+      relations: { components: true }
+     });
   }
 
   async remove(id: string) {
