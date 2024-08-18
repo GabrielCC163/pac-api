@@ -58,5 +58,5 @@ export class CreateFormDto {
   @ApiProperty({ type: CreateFormComponentDto })
   @IsNotEmpty()
   @IsArray()
-  formComponents: CreateFormComponentDto[];
+  components: CreateFormComponentDto[];
 }
