@@ -43,7 +43,7 @@ export class ExecutionService {
 
   async create(createExecutionDto: CreateExecutionDto) {
     const executionData = {
-      costCenterId: createExecutionDto.formId,
+      formId: createExecutionDto.formId,
       technicianId: createExecutionDto.technicianId,
       date: new Date(),
     };
