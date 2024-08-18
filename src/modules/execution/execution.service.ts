@@ -92,19 +92,24 @@ export class ExecutionService {
     // curl -X PUT -T file.png -H "Content-Type: image/png" "https://pac2024.s3.sa-east-1.amazonaws.com/image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQLVQQUWUKO5EZRIO%2F20240810%2Fsa-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240810T160249Z&X-Amz-Expires=300&X-Amz-Signature=2f8f250adf06215620ff94773e078e886132c5617b0f96568be92a3f09ccc2d8&X-Amz-SignedHeaders=host&x-id=PutObject"
   }
 
-  async addNote(executionId: string, executionValueId: string, userId: string, note: string) {
+  async updateNote(
+    executionId: string,
+    executionValueId: string,
+    userId: string,
+    note: string,
+  ) {
     const executionValue = await this.executionValueRepository.findOne({
       where: {
         id: executionValueId,
         executionId,
-      }
-    })
+      },
+    });
 
     if (!executionValue) {
       throw new NotFoundException('Execution value not found');
     }
 
-    await this.executionValueRepository.update(executionValueId, {note});
+    await this.executionValueRepository.update(executionValueId, { note, technicalManagerId: userId });
   }
 
   findAll(queryDto: FindAllExecutionsQueryDto): Promise<ExecutionEntity[]> {
@@ -116,10 +121,12 @@ export class ExecutionService {
   }
 
   findOne(id: string) {
-    return this.executionRepository.findOne({
-      where: { id },
-      relations: { technician: true },
-    });
+    return this.executionRepository.createQueryBuilder('executions')
+    .innerJoinAndSelect('executions.technician', 'technicians')
+    .innerJoinAndSelect('executions.executionValues', 'executionValues')
+    .innerJoinAndSelect('executionValues.technicalManager', 'technicalManagers')
+    .where('executions.id :id', { id })
+    .getOne();
   }
 
   async remove(user: UserEntity, id: string) {

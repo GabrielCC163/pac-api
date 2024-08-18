@@ -8,6 +8,7 @@ import {
   HttpCode,
   Query,
   ParseUUIDPipe,
+  Patch,
 } from '@nestjs/common';
 import { ExecutionService } from './execution.service';
 import { CreateExecutionDto } from './dto/create-execution.dto';
@@ -41,15 +42,20 @@ export class ExecutionController {
   }
 
   @Roles(UserRoleEnum.TECHNICAL_MANAGER)
-  @Post(':id/values/:executionValueId/notes')
-  @HttpCode(201)
-  async addNote(
+  @Patch(':id/values/:executionValueId/notes')
+  @HttpCode(200)
+  async updateNote(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Param('executionValueId', new ParseUUIDPipe()) executionValueId: string,
     @CurrentUser() user: UserEntity,
-    @Body() noteDto: AddNoteDto
+    @Body() noteDto: AddNoteDto,
   ) {
-    await this.executionService.addNote(id, executionValueId, user.id, noteDto.note);
+    await this.executionService.updateNote(
+      id,
+      executionValueId,
+      user.id,
+      noteDto.note,
+    );
   }
 
   @Roles(
