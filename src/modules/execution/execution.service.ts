@@ -125,7 +125,7 @@ export class ExecutionService {
     .innerJoinAndSelect('executions.technician', 'technicians')
     .innerJoinAndSelect('executions.executionValues', 'executionValues')
     .innerJoinAndSelect('executionValues.technicalManager', 'technicalManagers')
-    .where('executions.id :id', { id })
+    .where('executions.id = :id', { id })
     .getOne();
   }
 
