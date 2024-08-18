@@ -124,7 +124,7 @@ export class ExecutionService {
     return this.executionRepository.createQueryBuilder('executions')
     .innerJoinAndSelect('executions.technician', 'technicians')
     .innerJoinAndSelect('executions.executionValues', 'executionValues')
-    .innerJoinAndSelect('executionValues.technicalManager', 'technicalManagers')
+    .leftJoinAndSelect('executionValues.technicalManager', 'technicalManagers')
     .where('executions.id = :id', { id })
     .getOne();
   }
