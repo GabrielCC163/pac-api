@@ -2,12 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 class ExecutionValueDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'abc-123' })
   @IsNotEmpty()
   @IsUUID()
   formComponentId: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Answer 1' })
   @IsNotEmpty()
   @IsString()
   value: string;
@@ -24,7 +24,10 @@ export class CreateExecutionDto {
   @IsUUID()
   technicianId: string;
 
-  @ApiProperty({ isArray: true })
+  @ApiProperty({
+    isArray: true,
+    example: [{ formComponentId: 'abc-123', value: 'answer' }],
+  })
   @IsNotEmpty()
   @IsArray()
   executionValues: ExecutionValueDto[];

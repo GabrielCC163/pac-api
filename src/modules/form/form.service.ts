@@ -35,7 +35,7 @@ export class FormService {
         type: component.type,
         required: component.required,
         formId: form.id,
-        options: component.options
+        options: component.options,
       });
     }
 
@@ -53,8 +53,8 @@ export class FormService {
   findOne(id: string) {
     return this.formRepository.findOne({
       where: { id },
-      relations: { components: true, costCenter: true }
-     });
+      relations: { components: true, costCenter: true },
+    });
   }
 
   async remove(id: string) {

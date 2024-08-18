@@ -7,6 +7,7 @@ import {
   Delete,
   HttpCode,
   Query,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ExecutionService } from './execution.service';
 import { CreateExecutionDto } from './dto/create-execution.dto';
@@ -16,6 +17,7 @@ import { UserEntity, UserRoleEnum } from '@modules/user/entities/user.entity';
 import { CurrentUser } from '@common/decorators/current-user.decorator';
 import { GetUploadUrlDto } from './dto/get-upload-url.dto';
 import { FindAllExecutionsQueryDto } from './dto/find-all-executions-query.dto';
+import { AddNoteDto } from './dto/add-note.dto';
 
 @ApiTags('Executions')
 @Controller('executions')
@@ -36,6 +38,18 @@ export class ExecutionController {
   @Get('s3/upload-url')
   getUploadUrl(@Body() getUploadUrlDto: GetUploadUrlDto) {
     return this.executionService.getUploadUrl(getUploadUrlDto);
+  }
+
+  @Roles(UserRoleEnum.TECHNICAL_MANAGER)
+  @Post(':id/values/:executionValueId/notes')
+  @HttpCode(201)
+  async addNote(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Param('executionValueId', new ParseUUIDPipe()) executionValueId: string,
+    @CurrentUser() user: UserEntity,
+    @Body() noteDto: AddNoteDto
+  ) {
+    await this.executionService.addNote(id, executionValueId, user.id, noteDto.note);
   }
 
   @Roles(

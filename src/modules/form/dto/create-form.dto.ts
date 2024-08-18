@@ -37,7 +37,7 @@ class CreateFormComponentDto {
   @IsBooleanString()
   required: boolean;
 
-  @ApiPropertyOptional({example: ['option-1', 'option-2']})
+  @ApiPropertyOptional({ example: ['option-1', 'option-2'] })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
