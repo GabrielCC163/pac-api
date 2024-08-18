@@ -1,6 +1,7 @@
 import { BaseEntity } from '@database/base.entity';
 import { CostCenterEntity } from '@modules/cost-center/entities/cost-center.entity';
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { FormComponentEntity } from './form-component.entity';
 
 @Entity('forms')
 export class FormEntity extends BaseEntity {
@@ -17,4 +18,7 @@ export class FormEntity extends BaseEntity {
 
   @Column({ name: 'cost_center_id' })
   costCenterId: string;
+
+  @OneToMany(() => FormComponentEntity, components => components.form)
+  components?: FormComponentEntity[];
 }

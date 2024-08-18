@@ -50,10 +50,10 @@ export class FormService {
   }
 
   findOne(id: string) {
-    return this.formRepository.findOne({
+    return this.formRepository.findOne({ 
       where: { id },
-      relations: { costCenter: true },
-    });
+      relations: { components: true, costCenter: true }
+     });
   }
 
   async remove(id: string) {
