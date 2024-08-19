@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsArray, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 class ExecutionValueDto {
   @ApiProperty({ example: 'abc-123' })
@@ -11,6 +11,11 @@ class ExecutionValueDto {
   @IsNotEmpty()
   @IsString()
   value: string;
+
+  @ApiPropertyOptional({ example: 'Justification' })
+  @IsOptional()
+  @IsString()
+  justification?: string;
 }
 
 export class CreateExecutionDto {

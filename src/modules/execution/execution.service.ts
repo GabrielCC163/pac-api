@@ -54,6 +54,7 @@ export class ExecutionService {
         executionId: execution.id,
         formComponentId: execValue.formComponentId,
         value: execValue.value,
+        justification: execValue.justification
       });
     }
 
