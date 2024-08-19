@@ -36,6 +36,7 @@ export class FormService {
         required: component.required,
         formId: form.id,
         options: component.options,
+        insertJustification: component.insertJustification
       });
     }
 

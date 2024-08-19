@@ -36,6 +36,9 @@ export class FormComponentEntity {
   @Column({ type: 'varchar', array: true, nullable: true })
   options?: string[];
 
+  @Column({ type: 'boolean', default: false })
+  insertJustification: boolean;
+
   @ManyToOne(() => FormEntity, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
