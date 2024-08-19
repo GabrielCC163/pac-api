@@ -36,7 +36,12 @@ export class TechnicianController {
     );
   }
 
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER, UserRoleEnum.TECHNICIAN)
+  @Roles(
+    UserRoleEnum.ADMIN,
+    UserRoleEnum.CLIENT,
+    UserRoleEnum.COST_CENTER,
+    UserRoleEnum.TECHNICIAN,
+  )
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.technicianService.findOne(id);

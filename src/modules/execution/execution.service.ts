@@ -18,6 +18,7 @@ import { GetUploadUrlDto } from './dto/get-upload-url.dto';
 import { ExecutionValueEntity } from './entities/execution-value.entity';
 import { ExecutionEntity } from './entities/execution.entity';
 import { FindAllExecutionsQueryDto } from './dto/find-all-executions-query.dto';
+import { TechnicalManagerEntity } from '@modules/technical-manager/entities/technical-manager.entity';
 
 @Injectable()
 export class ExecutionService {
@@ -34,6 +35,8 @@ export class ExecutionService {
     private executionValueRepository: Repository<ExecutionValueEntity>,
     @InjectRepository(TechnicianEntity)
     private technicianRepository: Repository<TechnicianEntity>,
+    @InjectRepository(TechnicalManagerEntity)
+    private managerRepository: Repository<TechnicalManagerEntity>,
   ) {
     this.s3Region = this.configService.get('aws').region;
     this.s3AccessKey = this.configService.get('aws').access_key_id;
@@ -54,7 +57,7 @@ export class ExecutionService {
         executionId: execution.id,
         formComponentId: execValue.formComponentId,
         value: execValue.value,
-        justification: execValue.justification
+        justification: execValue.justification,
       });
     }
 
@@ -110,7 +113,11 @@ export class ExecutionService {
       throw new NotFoundException('Execution value not found');
     }
 
-    await this.executionValueRepository.update(executionValueId, { note, technicalManagerId: userId });
+    const technicalManager = await this.managerRepository.findOneBy({ userId });
+    await this.executionValueRepository.update(executionValueId, {
+      note,
+      technicalManagerId: technicalManager.id,
+    });
   }
 
   findAll(queryDto: FindAllExecutionsQueryDto): Promise<ExecutionEntity[]> {
@@ -122,12 +129,16 @@ export class ExecutionService {
   }
 
   findOne(id: string) {
-    return this.executionRepository.createQueryBuilder('executions')
-    .innerJoinAndSelect('executions.technician', 'technicians')
-    .innerJoinAndSelect('executions.executionValues', 'executionValues')
-    .leftJoinAndSelect('executionValues.technicalManager', 'technicalManagers')
-    .where('executions.id = :id', { id })
-    .getOne();
+    return this.executionRepository
+      .createQueryBuilder('executions')
+      .innerJoinAndSelect('executions.technician', 'technicians')
+      .innerJoinAndSelect('executions.executionValues', 'executionValues')
+      .leftJoinAndSelect(
+        'executionValues.technicalManager',
+        'technicalManagers',
+      )
+      .where('executions.id = :id', { id })
+      .getOne();
   }
 
   async remove(user: UserEntity, id: string) {

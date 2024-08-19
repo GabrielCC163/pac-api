@@ -30,5 +30,5 @@ export class ExecutionEntity extends BaseEntity {
   date: Date;
 
   @OneToMany(() => ExecutionValueEntity, value => value.execution)
-  executionValues: ExecutionValueEntity[]
+  executionValues: ExecutionValueEntity[];
 }

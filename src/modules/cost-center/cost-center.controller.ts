@@ -40,7 +40,7 @@ export class CostCenterController {
     UserRoleEnum.CLIENT,
     UserRoleEnum.TECHNICIAN,
     UserRoleEnum.TECHNICAL_MANAGER,
-    UserRoleEnum.COST_CENTER
+    UserRoleEnum.COST_CENTER,
   )
   @Get(':id')
   findOne(@Param('id', new ParseUUIDPipe()) id: string) {

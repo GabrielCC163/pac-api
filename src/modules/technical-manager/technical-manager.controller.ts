@@ -41,7 +41,12 @@ export class TechnicalManagerController {
     );
   }
 
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.COST_CENTER, UserRoleEnum.TECHNICAL_MANAGER)
+  @Roles(
+    UserRoleEnum.ADMIN,
+    UserRoleEnum.CLIENT,
+    UserRoleEnum.COST_CENTER,
+    UserRoleEnum.TECHNICAL_MANAGER,
+  )
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.technicalManagerService.findOne(id);

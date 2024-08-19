@@ -5,6 +5,7 @@ import { ExecutionEntity } from './entities/execution.entity';
 import { ExecutionValueEntity } from './entities/execution-value.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TechnicianEntity } from '@modules/technician/entities/technician.entity';
+import { TechnicalManagerEntity } from '@modules/technical-manager/entities/technical-manager.entity';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { TechnicianEntity } from '@modules/technician/entities/technician.entity
       ExecutionEntity,
       ExecutionValueEntity,
       TechnicianEntity,
+      TechnicalManagerEntity,
     ]),
   ],
   controllers: [ExecutionController],
