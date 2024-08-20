@@ -1,19 +1,19 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AlterFormComponentsAddOptions1723673156006
+export class AlterExecutionValuesAddJustification1724105461889
   implements MigrationInterface
 {
-  name = 'AlterFormComponentsAddOptions1723673156006';
+  name = 'AlterExecutionValuesAddJustification1724105461889';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "form_components" ADD "options" character varying array`,
+      `ALTER TABLE "execution_values" ADD "justification" text`,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "form_components" DROP COLUMN "options"`,
+      `ALTER TABLE "execution_values" DROP COLUMN "justification"`,
     );
   }
 }

@@ -40,6 +40,9 @@ export class ExecutionValueEntity {
   @Column({ type: 'text', nullable: true })
   note?: string;
 
+  @Column({ type: 'text', nullable: true })
+  justification?: string;
+
   @ManyToOne(() => TechnicalManagerEntity, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

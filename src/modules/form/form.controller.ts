@@ -39,7 +39,12 @@ export class FormController {
     return this.formService.findAll(findAllFormsQueryDto.costCenterId);
   }
 
-  @Roles(UserRoleEnum.ADMIN, UserRoleEnum.COST_CENTER, UserRoleEnum.TECHNICIAN)
+  @Roles(
+    UserRoleEnum.ADMIN,
+    UserRoleEnum.COST_CENTER,
+    UserRoleEnum.TECHNICIAN,
+    UserRoleEnum.TECHNICAL_MANAGER,
+  )
   @Get(':id')
   findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.formService.findOne(id);

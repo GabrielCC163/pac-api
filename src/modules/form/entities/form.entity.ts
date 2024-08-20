@@ -1,6 +1,13 @@
 import { BaseEntity } from '@database/base.entity';
 import { CostCenterEntity } from '@modules/cost-center/entities/cost-center.entity';
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { FormComponentEntity } from './form-component.entity';
 
 @Entity('forms')

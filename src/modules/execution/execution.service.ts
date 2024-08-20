@@ -7,6 +7,7 @@ import { UserEntity, UserRoleEnum } from '@modules/user/entities/user.entity';
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -17,6 +18,7 @@ import { GetUploadUrlDto } from './dto/get-upload-url.dto';
 import { ExecutionValueEntity } from './entities/execution-value.entity';
 import { ExecutionEntity } from './entities/execution.entity';
 import { FindAllExecutionsQueryDto } from './dto/find-all-executions-query.dto';
+import { TechnicalManagerEntity } from '@modules/technical-manager/entities/technical-manager.entity';
 
 @Injectable()
 export class ExecutionService {
@@ -33,6 +35,8 @@ export class ExecutionService {
     private executionValueRepository: Repository<ExecutionValueEntity>,
     @InjectRepository(TechnicianEntity)
     private technicianRepository: Repository<TechnicianEntity>,
+    @InjectRepository(TechnicalManagerEntity)
+    private managerRepository: Repository<TechnicalManagerEntity>,
   ) {
     this.s3Region = this.configService.get('aws').region;
     this.s3AccessKey = this.configService.get('aws').access_key_id;
@@ -42,7 +46,7 @@ export class ExecutionService {
 
   async create(createExecutionDto: CreateExecutionDto) {
     const executionData = {
-      costCenterId: createExecutionDto.formId,
+      formId: createExecutionDto.formId,
       technicianId: createExecutionDto.technicianId,
       date: new Date(),
     };
@@ -53,6 +57,7 @@ export class ExecutionService {
         executionId: execution.id,
         formComponentId: execValue.formComponentId,
         value: execValue.value,
+        justification: execValue.justification,
       });
     }
 
@@ -91,6 +96,30 @@ export class ExecutionService {
     // curl -X PUT -T file.png -H "Content-Type: image/png" "https://pac2024.s3.sa-east-1.amazonaws.com/image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQLVQQUWUKO5EZRIO%2F20240810%2Fsa-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240810T160249Z&X-Amz-Expires=300&X-Amz-Signature=2f8f250adf06215620ff94773e078e886132c5617b0f96568be92a3f09ccc2d8&X-Amz-SignedHeaders=host&x-id=PutObject"
   }
 
+  async updateNote(
+    executionId: string,
+    executionValueId: string,
+    userId: string,
+    note: string,
+  ) {
+    const executionValue = await this.executionValueRepository.findOne({
+      where: {
+        id: executionValueId,
+        executionId,
+      },
+    });
+
+    if (!executionValue) {
+      throw new NotFoundException('Execution value not found');
+    }
+
+    const technicalManager = await this.managerRepository.findOneBy({ userId });
+    await this.executionValueRepository.update(executionValueId, {
+      note,
+      technicalManagerId: technicalManager.id,
+    });
+  }
+
   findAll(queryDto: FindAllExecutionsQueryDto): Promise<ExecutionEntity[]> {
     return this.executionRepository.find({
       where: { formId: queryDto.formId },
@@ -100,10 +129,16 @@ export class ExecutionService {
   }
 
   findOne(id: string) {
-    return this.executionRepository.findOne({
-      where: { id },
-      relations: { technician: true },
-    });
+    return this.executionRepository
+      .createQueryBuilder('executions')
+      .innerJoinAndSelect('executions.technician', 'technicians')
+      .innerJoinAndSelect('executions.executionValues', 'executionValues')
+      .leftJoinAndSelect(
+        'executionValues.technicalManager',
+        'technicalManagers',
+      )
+      .where('executions.id = :id', { id })
+      .getOne();
   }
 
   async remove(user: UserEntity, id: string) {

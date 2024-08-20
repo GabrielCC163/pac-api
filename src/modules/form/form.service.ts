@@ -28,13 +28,15 @@ export class FormService {
     };
     const form = await this.formRepository.save(formData);
 
-    for (const component of createFormDto.formComponents) {
+    for (const component of createFormDto.components) {
       await this.formComponentRepository.save({
         title: component.title,
         subtitle: component.subtitle,
         type: component.type,
         required: component.required,
         formId: form.id,
+        options: component.options,
+        insertJustification: component.insertJustification,
       });
     }
 
@@ -50,10 +52,10 @@ export class FormService {
   }
 
   findOne(id: string) {
-    return this.formRepository.findOne({ 
+    return this.formRepository.findOne({
       where: { id },
-      relations: { components: true, costCenter: true }
-     });
+      relations: { components: true, costCenter: true },
+    });
   }
 
   async remove(id: string) {

@@ -1,7 +1,8 @@
 import { BaseEntity } from '@database/base.entity';
 import { FormEntity } from '@modules/form/entities/form.entity';
 import { TechnicianEntity } from '@modules/technician/entities/technician.entity';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { ExecutionValueEntity } from './execution-value.entity';
 
 @Entity('executions')
 export class ExecutionEntity extends BaseEntity {
@@ -27,4 +28,7 @@ export class ExecutionEntity extends BaseEntity {
 
   @Column({ type: 'timestamp' })
   date: Date;
+
+  @OneToMany(() => ExecutionValueEntity, value => value.execution)
+  executionValues: ExecutionValueEntity[];
 }
