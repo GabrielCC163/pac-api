@@ -60,7 +60,7 @@ export class CreateFormDto {
   @IsUUID()
   costCenterId: string;
 
-  @ApiProperty({ type: CreateFormComponentDto })
+  @ApiProperty({ type: [CreateFormComponentDto] })
   @IsNotEmpty()
   @IsArray()
   components: CreateFormComponentDto[];
