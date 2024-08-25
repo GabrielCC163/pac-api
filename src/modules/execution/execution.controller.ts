@@ -37,7 +37,7 @@ export class ExecutionController {
     UserRoleEnum.TECHNICIAN,
   )
   @Get('s3/upload-url')
-  getUploadUrl(@Body() getUploadUrlDto: GetUploadUrlDto) {
+  getUploadUrl(@Query() getUploadUrlDto: GetUploadUrlDto) {
     return this.executionService.getUploadUrl(getUploadUrlDto);
   }
 
