@@ -54,7 +54,7 @@ export class ExecutionController {
       id,
       executionValueId,
       user.id,
-      noteDto.note,
+      noteDto,
     );
   }
 

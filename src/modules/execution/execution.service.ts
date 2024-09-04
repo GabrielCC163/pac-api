@@ -19,6 +19,7 @@ import { ExecutionValueEntity } from './entities/execution-value.entity';
 import { ExecutionEntity } from './entities/execution.entity';
 import { FindAllExecutionsQueryDto } from './dto/find-all-executions-query.dto';
 import { TechnicalManagerEntity } from '@modules/technical-manager/entities/technical-manager.entity';
+import { AddNoteDto } from './dto/add-note.dto';
 
 @Injectable()
 export class ExecutionService {
@@ -100,7 +101,7 @@ export class ExecutionService {
     executionId: string,
     executionValueId: string,
     userId: string,
-    note: string,
+    noteDto: AddNoteDto,
   ) {
     const executionValue = await this.executionValueRepository.findOne({
       where: {
@@ -115,7 +116,7 @@ export class ExecutionService {
 
     const technicalManager = await this.managerRepository.findOneBy({ userId });
     await this.executionValueRepository.update(executionValueId, {
-      note,
+      ...noteDto,
       technicalManagerId: technicalManager.id,
     });
   }
