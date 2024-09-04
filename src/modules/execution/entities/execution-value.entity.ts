@@ -40,6 +40,9 @@ export class ExecutionValueEntity {
   @Column({ type: 'text', nullable: true })
   note?: string;
 
+  @Column({ type: 'bool', nullable: true, default: false })
+  accordingly?: boolean;
+
   @Column({ type: 'text', nullable: true })
   justification?: string;
 

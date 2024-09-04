@@ -1,10 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
 import {
   IsArray,
-  IsBoolean,
   IsBooleanString,
-  IsDefined,
   IsEnum,
   IsNotEmpty,
   IsOptional,
