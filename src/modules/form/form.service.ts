@@ -39,7 +39,8 @@ export class FormService {
         insertJustification: component.insertJustification,
         minValue: component.minValue,
         maxValue: component.maxValue,
-        trueValue: component.trueValue,
+        radioListTrueValue: component.radioListTrueValue,
+        checkboxListTrueValueIndex: component.checkboxListTrueValueIndex,
       });
     }
 

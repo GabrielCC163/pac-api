@@ -1,4 +1,5 @@
 import {
+  AfterLoad,
   Column,
   Entity,
   JoinColumn,
@@ -49,12 +50,23 @@ export class FormComponentEntity {
   @Column({ name: 'form_id' })
   formId: string;
 
-  @Column({ name: 'max_value', nullable: true })
+  @Column({ name: 'max_value', type: 'int', nullable: true })
   maxValue?: number;
 
-  @Column({ name: 'min_value', nullable: true })
+  @Column({ name: 'min_value', type: 'int', nullable: true })
   minValue?: number;
 
-  @Column({ name: 'true_value', nullable: true })
-  trueValue?: string;
+  @Column({ name: 'radio_list_true_value', nullable: true })
+  radioListTrueValue?: string;
+
+  @AfterLoad() _parseInt = () =>
+    (this.checkboxListTrueValueIndex = parseInt(
+      this.checkboxListTrueValueIndex as any,
+    ));
+  @Column({
+    type: 'int',
+    name: 'checkbox_list_true_value_index',
+    nullable: true,
+  })
+  checkboxListTrueValueIndex?: number;
 }

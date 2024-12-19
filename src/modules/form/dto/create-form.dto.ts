@@ -6,6 +6,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
   IsUUID,
 } from 'class-validator';
@@ -46,12 +47,12 @@ class CreateFormComponentDto {
   @IsString({ each: true })
   options?: string[];
 
-  @ApiPropertyOptional({ example: 10 })
+  @ApiPropertyOptional({ example: 20 })
   @IsOptional()
   @IsNumber()
   maxValue?: number;
 
-  @ApiPropertyOptional({ example: 20 })
+  @ApiPropertyOptional({ example: 10 })
   @IsOptional()
   @IsNumber()
   minValue?: number;
@@ -59,7 +60,12 @@ class CreateFormComponentDto {
   @ApiPropertyOptional({ example: 'abc' })
   @IsOptional()
   @IsString()
-  trueValue?: string;
+  radioListTrueValue?: string;
+
+  @ApiPropertyOptional({ example: 2 })
+  @IsOptional()
+  @IsPositive()
+  checkboxListTrueValueIndex?: number;
 }
 
 export class CreateFormDto {

@@ -20,7 +20,10 @@ import { ExecutionEntity } from './entities/execution.entity';
 import { FindAllExecutionsQueryDto } from './dto/find-all-executions-query.dto';
 import { TechnicalManagerEntity } from '@modules/technical-manager/entities/technical-manager.entity';
 import { AddNoteDto } from './dto/add-note.dto';
-import { FormComponentEntity, FormComponentTypeEnum } from '@modules/form/entities/form-component.entity';
+import {
+  FormComponentEntity,
+  FormComponentTypeEnum,
+} from '@modules/form/entities/form-component.entity';
 
 @Injectable()
 export class ExecutionService {
@@ -57,35 +60,67 @@ export class ExecutionService {
     const execution = await this.executionRepository.save(executionData);
 
     let accordingly = true;
-    const formComponent = await this.formComponentRepository.findOneBy({ id: createExecutionDto.executionValues[0].formComponentId });
+    const formComponent = await this.formComponentRepository.findOneBy({
+      id: createExecutionDto.executionValues[0].formComponentId,
+    });
 
     for (const execValue of createExecutionDto.executionValues) {
-      await this.executionValueRepository.save({
+      const newExecValue = await this.executionValueRepository.save({
         executionId: execution.id,
         formComponentId: execValue.formComponentId,
         value: execValue.value,
         justification: execValue.justification,
       });
 
-      if (formComponent.type === FormComponentTypeEnum.NUMBER && formComponent.maxValue && formComponent.minValue) {
-        if (+execValue.value.replace('.', '').replace(',', '.') < formComponent.minValue || +execValue.value.replace('.', '').replace(',', '.') > formComponent.maxValue) {
+      if (
+        formComponent.type === FormComponentTypeEnum.NUMBER &&
+        formComponent.maxValue &&
+        formComponent.minValue
+      ) {
+        if (
+          +execValue.value.replace('.', '').replace(',', '.') <
+            formComponent.minValue ||
+          +execValue.value.replace('.', '').replace(',', '.') >
+            formComponent.maxValue
+        ) {
           accordingly = false;
         }
       }
 
-      if (formComponent.type === FormComponentTypeEnum.RADIO_LIST && formComponent.trueValue && formComponent.trueValue !== execValue.value) {
+      if (
+        formComponent.type === FormComponentTypeEnum.RADIO_LIST &&
+        formComponent.radioListTrueValue &&
+        formComponent.radioListTrueValue !== execValue.value
+      ) {
         accordingly = false;
       }
-    }
 
-    if (formComponent.type === FormComponentTypeEnum.CHECKBOX_LIST && formComponent.trueValue) {
-      accordingly = false;
-      if (createExecutionDto.executionValues.map(e => e.value).includes(formComponent.trueValue)) {
-        accordingly = true;
+      if (
+        formComponent.type === FormComponentTypeEnum.CHECKBOX_LIST &&
+        formComponent.checkboxListTrueValueIndex
+      ) {
+        const checkboxListValues = execValue.value.split(';');
+        if (checkboxListValues?.length > 0) {
+          const trueValue =
+            checkboxListValues[formComponent.checkboxListTrueValueIndex];
+          if (trueValue && trueValue == 'false') {
+            accordingly = false;
+          }
+        } else {
+          accordingly = false;
+        }
       }
+
+      await this.executionValueRepository.update(
+        { id: newExecValue.id },
+        { accordingly },
+      );
     }
 
-    await this.executionRepository.update({ id: execution.id }, { accordingly });
+    await this.executionRepository.update(
+      { id: execution.id },
+      { accordingly },
+    );
 
     return execution;
   }
@@ -144,6 +179,15 @@ export class ExecutionService {
       ...noteDto,
       technicalManagerId: technicalManager.id,
     });
+
+    const execValues = await this.executionValueRepository.find({
+      where: { executionId, accordingly: false },
+    });
+    let accordingly = true;
+    if (execValues?.length) {
+      accordingly = false;
+    }
+    await this.executionRepository.update({ id: executionId }, { accordingly });
   }
 
   findAll(queryDto: FindAllExecutionsQueryDto): Promise<ExecutionEntity[]> {
