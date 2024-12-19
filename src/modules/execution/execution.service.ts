@@ -20,6 +20,7 @@ import { ExecutionEntity } from './entities/execution.entity';
 import { FindAllExecutionsQueryDto } from './dto/find-all-executions-query.dto';
 import { TechnicalManagerEntity } from '@modules/technical-manager/entities/technical-manager.entity';
 import { AddNoteDto } from './dto/add-note.dto';
+import { FormComponentEntity, FormComponentTypeEnum } from '@modules/form/entities/form-component.entity';
 
 @Injectable()
 export class ExecutionService {
@@ -38,6 +39,8 @@ export class ExecutionService {
     private technicianRepository: Repository<TechnicianEntity>,
     @InjectRepository(TechnicalManagerEntity)
     private managerRepository: Repository<TechnicalManagerEntity>,
+    @InjectRepository(FormComponentEntity)
+    private formComponentRepository: Repository<FormComponentEntity>,
   ) {
     this.s3Region = this.configService.get('aws').region;
     this.s3AccessKey = this.configService.get('aws').access_key_id;
@@ -53,6 +56,9 @@ export class ExecutionService {
     };
     const execution = await this.executionRepository.save(executionData);
 
+    let accordingly = true;
+    const formComponent = await this.formComponentRepository.findOneBy({ id: createExecutionDto.executionValues[0].formComponentId });
+
     for (const execValue of createExecutionDto.executionValues) {
       await this.executionValueRepository.save({
         executionId: execution.id,
@@ -60,7 +66,26 @@ export class ExecutionService {
         value: execValue.value,
         justification: execValue.justification,
       });
+
+      if (formComponent.type === FormComponentTypeEnum.NUMBER && formComponent.maxValue && formComponent.minValue) {
+        if (+execValue.value.replace('.', '').replace(',', '.') < formComponent.minValue || +execValue.value.replace('.', '').replace(',', '.') > formComponent.maxValue) {
+          accordingly = false;
+        }
+      }
+
+      if (formComponent.type === FormComponentTypeEnum.RADIO_LIST && formComponent.trueValue && formComponent.trueValue !== execValue.value) {
+        accordingly = false;
+      }
     }
+
+    if (formComponent.type === FormComponentTypeEnum.CHECKBOX_LIST && formComponent.trueValue) {
+      accordingly = false;
+      if (createExecutionDto.executionValues.map(e => e.value).includes(formComponent.trueValue)) {
+        accordingly = true;
+      }
+    }
+
+    await this.executionRepository.update({ id: execution.id }, { accordingly });
 
     return execution;
   }

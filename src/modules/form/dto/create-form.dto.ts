@@ -4,6 +4,7 @@ import {
   IsBooleanString,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
@@ -44,6 +45,21 @@ class CreateFormComponentDto {
   @IsArray()
   @IsString({ each: true })
   options?: string[];
+
+  @ApiPropertyOptional({ example: 10 })
+  @IsOptional()
+  @IsNumber()
+  maxValue?: number;
+
+  @ApiPropertyOptional({ example: 20 })
+  @IsOptional()
+  @IsNumber()
+  minValue?: number;
+
+  @ApiPropertyOptional({ example: 'abc' })
+  @IsOptional()
+  @IsString()
+  trueValue?: string;
 }
 
 export class CreateFormDto {

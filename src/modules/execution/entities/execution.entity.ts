@@ -29,6 +29,9 @@ export class ExecutionEntity extends BaseEntity {
   @Column({ type: 'timestamp' })
   date: Date;
 
+  @Column({ type: 'bool', nullable: true, default: false })
+  accordingly?: boolean;
+
   @OneToMany(() => ExecutionValueEntity, value => value.execution)
   executionValues: ExecutionValueEntity[];
 }

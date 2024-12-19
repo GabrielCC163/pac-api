@@ -48,4 +48,13 @@ export class FormComponentEntity {
 
   @Column({ name: 'form_id' })
   formId: string;
+
+  @Column({ name: 'max_value', nullable: true })
+  maxValue?: number;
+
+  @Column({ name: 'min_value', nullable: true })
+  minValue?: number;
+
+  @Column({ name: 'true_value', nullable: true })
+  trueValue?: string;
 }

@@ -37,6 +37,9 @@ export class FormService {
         formId: form.id,
         options: component.options,
         insertJustification: component.insertJustification,
+        minValue: component.minValue,
+        maxValue: component.maxValue,
+        trueValue: component.trueValue,
       });
     }
 
