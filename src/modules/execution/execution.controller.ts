@@ -1,3 +1,4 @@
+import { uuid } from 'uuidv4';
 import {
   Controller,
   Get,
@@ -9,16 +10,25 @@ import {
   Query,
   ParseUUIDPipe,
   Patch,
+  UseInterceptors,
+  UploadedFile,
+  Res,
+  NotFoundException,
 } from '@nestjs/common';
 import { ExecutionService } from './execution.service';
 import { CreateExecutionDto } from './dto/create-execution.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Roles } from '@common/decorators/roles.decorator';
 import { UserEntity, UserRoleEnum } from '@modules/user/entities/user.entity';
 import { CurrentUser } from '@common/decorators/current-user.decorator';
-import { GetUploadUrlDto } from './dto/get-upload-url.dto';
+// import { GetUploadUrlDto } from './dto/get-upload-url.dto';
 import { FindAllExecutionsQueryDto } from './dto/find-all-executions-query.dto';
 import { AddNoteDto } from './dto/add-note.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname, join } from 'path';
+import { existsSync } from 'fs';
+import { Response } from 'express';
 
 @ApiTags('Executions')
 @Controller('executions')
@@ -31,14 +41,47 @@ export class ExecutionController {
     return this.executionService.create(createExecutionDto);
   }
 
+  // @Roles(
+  //   UserRoleEnum.ADMIN,
+  //   UserRoleEnum.TECHNICAL_MANAGER,
+  //   UserRoleEnum.TECHNICIAN,
+  // )
+  // @Get('s3/upload-url')
+  // getUploadUrl(@Query() getUploadUrlDto: GetUploadUrlDto) {
+  //   return this.executionService.getUploadUrl(getUploadUrlDto);
+  // }
+
   @Roles(
     UserRoleEnum.ADMIN,
     UserRoleEnum.TECHNICAL_MANAGER,
     UserRoleEnum.TECHNICIAN,
   )
-  @Get('s3/upload-url')
-  getUploadUrl(@Query() getUploadUrlDto: GetUploadUrlDto) {
-    return this.executionService.getUploadUrl(getUploadUrlDto);
+  @Post('upload-file')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './files',
+        filename: (_req, file, callback) => {
+          const ext = extname(file.originalname);
+          const id = uuid();
+          callback(null, `${id}${ext}`);
+        },
+      }),
+    }),
+  )
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return { filename: file.filename };
+  }
+
+  @Get('files/:filename')
+  getFile(@Param('filename') filename: string, @Res() res: Response) {
+    const filePath = join(process.cwd(), 'files', filename);
+
+    if (!existsSync(filePath)) {
+      throw new NotFoundException('File not found');
+    }
+
+    return res.sendFile(filePath);
   }
 
   @Roles(UserRoleEnum.TECHNICAL_MANAGER)

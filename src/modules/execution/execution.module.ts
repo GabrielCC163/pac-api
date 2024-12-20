@@ -15,7 +15,7 @@ import { FormComponentEntity } from '@modules/form/entities/form-component.entit
       ExecutionValueEntity,
       TechnicianEntity,
       TechnicalManagerEntity,
-      FormComponentEntity
+      FormComponentEntity,
     ]),
   ],
   controllers: [ExecutionController],

@@ -39,7 +39,6 @@ import { ExecutionModule } from './modules/execution/execution.module';
         limit: 100,
       },
     ]),
-    TypeOrmModule.forRoot({ ...TypeOrmConfig, autoLoadEntities: true }),
     PinoLoggerModule.forRoot({
       pinoHttp: {
         transport: {
@@ -48,6 +47,7 @@ import { ExecutionModule } from './modules/execution/execution.module';
         },
       },
     }),
+    TypeOrmModule.forRoot({ ...TypeOrmConfig, autoLoadEntities: true }),
     UserModule,
     AuthModule,
     ClientModule,
