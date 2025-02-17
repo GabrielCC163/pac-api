@@ -17,7 +17,7 @@ import {
 } from '@nestjs/common';
 import { ExecutionService } from './execution.service';
 import { CreateExecutionDto } from './dto/create-execution.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { Roles } from '@common/decorators/roles.decorator';
 import { UserEntity, UserRoleEnum } from '@modules/user/entities/user.entity';
 import { CurrentUser } from '@common/decorators/current-user.decorator';

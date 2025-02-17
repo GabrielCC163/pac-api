@@ -60,11 +60,11 @@ export class ExecutionService {
     const execution = await this.executionRepository.save(executionData);
 
     let accordingly = true;
-    const formComponent = await this.formComponentRepository.findOneBy({
-      id: createExecutionDto.executionValues[0].formComponentId,
-    });
 
     for (const execValue of createExecutionDto.executionValues) {
+      const formComponent = await this.formComponentRepository.findOneBy({
+        id: execValue.formComponentId
+      })
       const newExecValue = await this.executionValueRepository.save({
         executionId: execution.id,
         formComponentId: execValue.formComponentId,
@@ -79,9 +79,9 @@ export class ExecutionService {
       ) {
         if (
           +execValue.value.replace('.', '').replace(',', '.') <
-            formComponent.minValue ||
+            +formComponent.minValue ||
           +execValue.value.replace('.', '').replace(',', '.') >
-            formComponent.maxValue
+            +formComponent.maxValue
         ) {
           accordingly = false;
         }
@@ -97,7 +97,7 @@ export class ExecutionService {
 
       if (
         formComponent.type === FormComponentTypeEnum.CHECKBOX_LIST &&
-        formComponent.checkboxListTrueValueIndex
+        formComponent.checkboxListTrueValueIndex !== undefined
       ) {
         const checkboxListValues = execValue.value.split(';');
         if (checkboxListValues?.length > 0) {
@@ -193,7 +193,7 @@ export class ExecutionService {
   findAll(queryDto: FindAllExecutionsQueryDto): Promise<ExecutionEntity[]> {
     return this.executionRepository.find({
       where: { formId: queryDto.formId },
-      relations: { technician: true },
+      relations: { technician: true, executionValues: true },
       order: { createdAt: 'DESC' },
     });
   }
