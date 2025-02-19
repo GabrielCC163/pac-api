@@ -74,8 +74,8 @@ export class ExecutionService {
 
       if (
         formComponent.type === FormComponentTypeEnum.NUMBER &&
-        formComponent.maxValue &&
-        formComponent.minValue
+        formComponent.maxValue !== undefined &&
+        formComponent.minValue !== undefined
       ) {
         if (
           +execValue.value.replace('.', '').replace(',', '.') <
