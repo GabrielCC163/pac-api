@@ -62,6 +62,7 @@ export class ExecutionService {
     let accordingly = true;
 
     for (const execValue of createExecutionDto.executionValues) {
+      let execValueAccordingly = true;
       const formComponent = await this.formComponentRepository.findOneBy({
         id: execValue.formComponentId
       })
@@ -84,6 +85,7 @@ export class ExecutionService {
             +formComponent.maxValue
         ) {
           accordingly = false;
+          execValueAccordingly = false;
         }
       }
 
@@ -93,6 +95,7 @@ export class ExecutionService {
         formComponent.radioListTrueValue !== execValue.value
       ) {
         accordingly = false;
+        execValueAccordingly = false;
       }
 
       if (
@@ -105,15 +108,17 @@ export class ExecutionService {
             checkboxListValues[formComponent.checkboxListTrueValueIndex];
           if (trueValue && trueValue == 'false') {
             accordingly = false;
+            execValueAccordingly = false;
           }
         } else {
           accordingly = false;
+          execValueAccordingly = false;
         }
       }
 
       await this.executionValueRepository.update(
         { id: newExecValue.id },
-        { accordingly },
+        { accordingly: execValueAccordingly },
       );
     }
 
