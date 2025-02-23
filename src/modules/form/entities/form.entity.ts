@@ -1,5 +1,6 @@
 import { BaseEntity } from '@database/base.entity';
 import { CostCenterEntity } from '@modules/cost-center/entities/cost-center.entity';
+import { ExecutionEntity } from '@modules/execution/entities/execution.entity';
 import {
   Column,
   Entity,
@@ -28,4 +29,7 @@ export class FormEntity extends BaseEntity {
 
   @OneToMany(() => FormComponentEntity, components => components.form)
   components?: FormComponentEntity[];
+
+  @OneToMany(() => ExecutionEntity, executions => executions.form)
+  executions?: ExecutionEntity[];
 }

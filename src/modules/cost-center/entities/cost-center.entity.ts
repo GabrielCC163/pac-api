@@ -1,5 +1,6 @@
 import { BaseEntity } from '@database/base.entity';
 import { ClientEntity } from '@modules/client/entities/client.entity';
+import { FormEntity } from '@modules/form/entities/form.entity';
 import { UserEntity } from '@modules/user/entities/user.entity';
 import {
   Column,
@@ -7,6 +8,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
 } from 'typeorm';
 
@@ -62,4 +64,7 @@ export class CostCenterEntity extends BaseEntity {
 
   @Column({ name: 'client_id' })
   clientId: string;
+
+  @OneToMany(() => FormEntity, forms => forms.costCenter)
+  forms?: FormEntity[];
 }

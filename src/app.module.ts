@@ -15,6 +15,7 @@ import { TechnicianModule } from './modules/technician/technician.module';
 import { TechnicalManagerModule } from './modules/technical-manager/technical-manager.module';
 import { FormModule } from './modules/form/form.module';
 import { ExecutionModule } from './modules/execution/execution.module';
+import { ReportsModule } from './modules/reports/reports.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { ExecutionModule } from './modules/execution/execution.module';
     TechnicalManagerModule,
     FormModule,
     ExecutionModule,
+    ReportsModule,
   ],
   controllers: [],
   providers: [
