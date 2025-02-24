@@ -12,7 +12,7 @@ export class ReportsService {
 
   getCostCentersWithExecutions(clientId: string) {
     return this.costCenterRepository.find({
-      where: { clientId },
+      where: { clientId, forms: { executions: { accordingly: false } } },
       relations: { forms: { executions: { executionValues: true } } },
       order: { companyName: 'ASC' }
     })
