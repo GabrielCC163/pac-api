@@ -44,6 +44,7 @@ export class FormController {
     UserRoleEnum.COST_CENTER,
     UserRoleEnum.TECHNICIAN,
     UserRoleEnum.TECHNICAL_MANAGER,
+    UserRoleEnum.CLIENT
   )
   @Get(':id')
   findOne(@Param('id', new ParseUUIDPipe()) id: string) {
